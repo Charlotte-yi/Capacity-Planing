@@ -1,0 +1,1399 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Capacity Planning Prototype</title><style>:root{--nav:#2d0b67;--purple:#7447f7;--purple-100:#f3efff;--text:#15182b;--muted:#687086;--border:#dfe3ec;--bg:#f6f7fb;--blue:#4f87ea;--orange:#f59b4a;--red:#db4253;--yellow:#d79b00;--green:#2a9a54;--panel:#fff;--shadow:0 1px 2px rgba(20,24,43,.04)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}#app{min-height:100vh}.side-nav{position:fixed;inset:0 auto 0 0;width:76px;background:var(--nav);display:flex;align-items:center;flex-direction:column;padding:16px 8px;z-index:30}.brand{width:34px;height:34px;border-radius:9px;background:#fff;color:var(--nav);font-weight:800;display:grid;place-items:center;margin-bottom:26px}.nav-item{width:58px;height:54px;border:0;background:transparent;color:#d9cafa;border-radius:9px;margin:4px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.nav-item span{font-size:10px}.nav-item.active{background:rgba(255,255,255,.13);color:#fff}main{margin-left:76px;min-height:100vh}.page-shell,.schedule-shell{padding:20px 24px 28px;max-width:1500px;margin:0 auto}.page-header,.schedule-header,.ws-title-line,.section-title,.workspace-head,.card-top,.schedule-toolbar,.side-head,.side-actions{display:flex;align-items:center;justify-content:space-between;gap:16px}.page-header h1,.workspace-title h1,.schedule-header h1{margin:0;font-size:24px;letter-spacing:-.02em}.page-header p,.workspace-title p,.section-title p{margin:4px 0 0;color:var(--muted)}.horizon{display:flex;flex-direction:column;align-items:flex-end;gap:6px}.select-like,.btn,.link-btn,.icon-btn{border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 11px;color:var(--text)}.link-btn{border:0;background:transparent;color:#3967bd;padding:4px}.btn.primary{background:var(--nav);color:white;border-color:var(--nav)}.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-top:16px;padding:14px;box-shadow:var(--shadow)}.section-title h2{font-size:15px;margin:0}.portfolio-grid{display:grid;grid-template-columns:1fr 280px;gap:14px;margin-top:12px}.outlook-strip{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--border);border-radius:8px;overflow:hidden}.outlook-cell{border:0;border-right:1px solid var(--border);background:#fff;min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.outlook-cell:last-child{border-right:0}.week-label{font-size:12px;color:#4c566f}.health-dot{width:13px;height:13px;border-radius:50%;display:block}.health-dot.healthy{background:var(--green)}.health-dot.watch{background:#e3a400}.health-dot.attention{background:var(--red)}.healthy-text{color:var(--green)}.watch-text{color:#b47c00}.attention-text{color:var(--red)}.outlook-cell span:last-child{color:var(--muted);font-size:11px}.next-issue{border:1px solid #d9dcef;background:#fafaff;border-radius:10px;text-align:left;padding:14px;display:flex;flex-direction:column;gap:7px}.next-issue>span{font-weight:700}.next-issue small,.next-issue p{color:var(--muted);margin:0}.next-issue strong{font-size:14px}.attention-panel{border-color:#f0c5cb;background:#fffafb}.attention-row{display:grid;grid-template-columns:1.2fr 1fr 1.5fr auto;gap:18px;align-items:center;border:1px solid #eadfe3;border-radius:8px;padding:12px;margin-top:10px;background:#fff}.attention-row>div:first-child{display:flex;flex-direction:column}.attention-row span{color:var(--muted)}.attention-row>div:last-child{display:flex;gap:8px;align-items:center}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 9px;font-size:11px;width:max-content}.badge.attention{background:#fde6e9;color:#bf293c}.badge.watch{background:#fff3d8;color:#a66d00}.badge.healthy{background:#e9f6ee;color:#2c7c47}.toolbar{display:flex;gap:8px}.toolbar input,.filter-row input{border:1px solid var(--border);border-radius:8px;padding:8px 10px}.workspace-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.workspace-card{border:1px solid var(--border);background:white;border-radius:10px;padding:12px;text-align:left}.workspace-card:hover{border-color:#a888ff;box-shadow:0 0 0 1px #dacfff}.card-top>div{display:flex;flex-direction:column;gap:2px}.card-top span{color:var(--muted);font-size:12px}.spark{height:105px;display:flex;align-items:end;gap:8px;margin:12px 0 8px;border-bottom:1px solid #eceff5;padding:0 8px}.spark-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:5px}.spark-bar{width:100%;max-width:44px;background:#9bc0ff;border-radius:3px 3px 0 0;position:relative;overflow:hidden}.spark-bar.risk{background:#70a6f4}.spark-unassigned{position:absolute;inset:auto 0 0;background:#e66f52}.spark-col small{color:var(--muted);font-size:10px}.metric-line{font-size:12px;color:#4f5870}.insight{margin-top:9px;padding-top:9px;border-top:1px solid #eef0f5;color:#4f5870;display:flex;justify-content:space-between}.insight span{color:#4b6fd2}.workspace-title{margin-bottom:6px}.crumb{color:var(--muted);margin:8px 0 10px}.planning-chart{height:220px;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:end;padding:16px 12px 0;border-bottom:1px solid var(--border)}.week-bar{height:100%;border:0;background:transparent;border-radius:8px 8px 0 0;display:flex;flex-direction:column;justify-content:end;align-items:center;padding:4px;gap:5px}.week-bar.selected{background:#f8f5ff;box-shadow:inset 0 0 0 1px #dacdff}.bar-area{height:160px;width:64%;max-width:74px;display:flex;flex-direction:column;justify-content:end;position:relative}.stack{width:100%}.stack.assigned{background:var(--blue);border-radius:4px 4px 0 0}.stack.unassigned{background:var(--orange)}.available-line{position:absolute;left:-12%;width:124%;border-top:2px solid #7a869d;z-index:5}.supply-line{border-top-color:#596b8f}.available-line span{position:absolute;right:0;bottom:3px;font-size:9px;color:#697288;background:white;padding:1px 3px}.week-bar small{color:var(--muted)}.legend{display:flex;gap:18px;margin:12px}.sq{display:inline-block;width:9px;height:9px;margin-right:5px}.sq.blue{background:var(--blue)}.sq.orange{background:var(--orange)}.line-key{display:inline-block;width:18px;border-top:2px solid #7a869d;margin:0 5px 3px 0}.diagnosis{margin-top:16px;background:#f4f0ff;color:var(--text);border:1px solid #ddd2ff;border-radius:10px;padding:16px;display:grid;grid-template-columns:1.4fr repeat(3,.8fr);gap:14px 24px;align-items:center}.diagnosis-summary{display:flex;flex-direction:column}.diagnosis-summary span{color:#665c82}.diagnosis>div:not(.diagnosis-copy):not(.diagnosis-summary){display:flex;flex-direction:column}.diagnosis>div b{font-size:18px}.diagnosis>div span{font-size:11px;color:#665c82}.diagnosis-copy{color:#51466d;grid-column:1/-1;border-top:1px solid #ddd2ff;padding-top:10px}.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.risk-card .section-title{align-items:flex-start}.risk-card>strong{font-size:18px;display:block;margin-top:14px}.risk-card p{color:var(--muted)}.supply-table{border-top:1px solid var(--border);margin-top:10px}.supply-row{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:12px;align-items:center;padding:9px 4px;border-bottom:1px solid #edf0f4}.shared-chip{margin-left:8px;padding:2px 6px;border-radius:999px;background:#eee8ff;color:#714fd0;font-size:10px}.table-head,.table-row{display:grid;grid-template-columns:1.8fr .5fr .8fr 1fr auto;gap:12px;align-items:center}.table-head{color:var(--muted);padding:8px;border-bottom:1px solid var(--border)}.table-row{padding:12px 8px;border-bottom:1px solid #edf0f4}.table-row>span:first-child{display:flex;flex-direction:column}.table-row small{color:var(--muted)}.overlay{position:fixed;inset:0;background:rgba(20,22,32,.22);z-index:40}.side-panel{position:fixed;right:0;top:0;bottom:0;width:400px;background:white;z-index:50;box-shadow:-10px 0 30px rgba(20,22,32,.16);padding:18px;overflow:auto}.side-panel label{display:flex;flex-direction:column;gap:6px;margin:16px 0;font-weight:600}.side-panel input,.side-panel select,.schedule-toolbar select{padding:9px;border:1px solid var(--border);border-radius:7px;background:#fff}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel-note{background:#f4f6fb;border-radius:8px;padding:10px;color:var(--muted);line-height:1.4}.side-actions{position:absolute;bottom:18px;right:18px;left:18px;justify-content:flex-end;border-top:1px solid var(--border);padding-top:14px}.schedule-shell{max-width:none;padding:12px 16px 24px}.schedule-header{background:white;border-bottom:1px solid var(--border);margin:-12px -16px 0;padding:12px 16px}.schedule-header h1{font-size:20px;margin-top:2px}.schedule-actions{display:flex;align-items:center;gap:8px}.draft-count{background:var(--purple-100);color:var(--purple);padding:6px 9px;border-radius:999px;font-weight:700}.schedule-toolbar{background:white;padding:10px 0}.segmented{border:1px solid var(--border);border-radius:8px;display:flex;overflow:hidden}.segmented button{border:0;background:white;padding:8px 12px}.segmented .active{background:#f0ecff;color:var(--purple);font-weight:700}.schedule-toolbar label{display:flex;align-items:center;gap:7px}.anchor-chip,.context-chip{padding:7px 10px;background:#f5f2ff;border-radius:8px;color:#5d469f}.context-chip{margin-left:auto;background:#f4f6fa;color:#566076}.schedule-main{display:grid;grid-template-columns:310px 1fr;border:1px solid var(--border);background:white;height:690px;overflow:hidden}.work-list{border-right:1px solid var(--border);overflow:auto}.list-tabs{display:flex;border-bottom:1px solid var(--border)}.list-tabs button{flex:1;border:0;background:white;padding:11px}.list-tabs button.active{color:var(--purple);border-bottom:2px solid var(--purple);font-weight:700}.filter-row{padding:10px;display:flex;gap:6px}.filter-row input{min-width:0;flex:1}.phased-note{font-size:10px;color:var(--muted);background:#f8f9fc;padding:8px 10px;line-height:1.4}.work-item{width:calc(100% - 16px);margin:8px;border:1px solid var(--border);background:white;border-radius:8px;padding:10px;text-align:left;display:flex;justify-content:space-between;align-items:center}.work-item>div{display:flex;flex-direction:column;gap:3px}.work-item small,.work-item span{color:var(--muted)}.work-item.selected{border:2px solid var(--purple);background:#fbf9ff}.work-item.drafted{opacity:.58}.work-item em{font-style:normal;color:var(--purple);font-size:11px}.unassigned-chip{background:#f1f2f5;border-radius:999px;padding:3px 7px}.gantt{overflow:auto;position:relative}.gantt-head,.gantt-row{display:grid;grid-template-columns:180px 1fr;min-width:1000px}.gantt-head{position:sticky;top:0;background:#fafbfc;z-index:5;border-bottom:1px solid var(--border)}.assignee-col{padding:10px;border-right:1px solid var(--border)}.gantt-row .assignee-col{display:flex;flex-direction:column;gap:2px}.gantt-row .assignee-col span{color:var(--muted);font-size:11px}.timeline-head,.timeline-row{position:relative;display:grid;grid-template-columns:repeat(5,1fr);align-items:center}.timeline-head>span{text-align:center;color:var(--muted);border-right:1px solid #eceef4;padding:10px}.gantt-row{height:70px;border-bottom:1px solid #edf0f4}.gantt-row.anchor{background:#faf7ff}.timeline-row{background-image:linear-gradient(to right,#eef0f5 1px,transparent 1px);background-size:20% 100%}.today-marker{position:absolute;left:38%;top:0;bottom:0;width:1px;background:#3f6fe7;z-index:2}.today-marker.head b{position:absolute;top:-2px;left:-16px;font-size:10px;color:#3f6fe7;background:#fafbfc;padding:1px 3px}.published-bar,.proposed-bar,.draft-bar{position:absolute;top:21px;height:28px;border-radius:5px;display:flex;align-items:center;padding:0 7px;font-size:11px;z-index:3}.published-bar{background:#8ba9dc;color:#20345f}.bar-a{}.proposed-bar{left:55%;width:23%;background:rgba(116,71,247,.11);border:2px dashed var(--purple);color:#6040c7}.draft-bar{left:55%;width:23%;border:2px solid var(--purple);justify-content:space-between}.draft-bar button{border:0;background:transparent}
+
+.draft-overdue{background:#ed6a76;color:#fff}.draft-neutral{background:#c8ccd5;color:#333}.draft-progress{background:linear-gradient(90deg,#e66b77 0 42%,#6294e8 42% 100%);color:white}.selection-footer{position:fixed;left:100px;right:24px;bottom:18px;background:#1d2238;color:white;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 25px rgba(0,0,0,.18);z-index:20}.selection-footer>div{display:flex;flex-direction:column}.selection-footer span{color:#cbd0df}.toast{position:fixed;right:24px;bottom:24px;background:#173c2b;color:white;padding:11px 14px;border-radius:9px;z-index:80;box-shadow:0 8px 26px rgba(0,0,0,.2)}.toast button{border:0;background:transparent;color:white;margin-left:14px}.empty{padding:24px;color:var(--muted);text-align:center}.planning-summary-list{margin:6px 0 0;padding-left:22px;display:grid;gap:10px;color:#4f5870;line-height:1.5}.planning-summary-list strong{color:var(--text)}.week-context{color:var(--muted);font-size:11px;font-weight:600}.health-context{display:flex;align-items:center;gap:8px}.health-context small{color:var(--muted);font-weight:600}
+.schedule-main{grid-template-columns:330px 1fr;height:720px}.work-list{background:#fff}.schedule-filters{padding:12px;border-bottom:1px solid var(--border)}.filter-label{display:block;font-size:10px;letter-spacing:.04em;color:var(--muted);margin:8px 0 6px;text-transform:uppercase}.workspace-radios{display:grid;gap:7px;padding-bottom:10px;border-bottom:1px solid var(--border)}.workspace-radio{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.3}.workspace-radio input{accent-color:var(--purple);margin-top:2px}.filter-select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:7px;background:#fff}.object-tabs,.assignment-tabs{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;margin-top:9px}.object-tabs button,.assignment-tabs button{flex:1;border:0;background:#fff;padding:8px 6px}.object-tabs button.active,.assignment-tabs button.active{background:#24211f;color:#fff}.search-wrap{margin-top:10px}.search-wrap input{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:7px;padding:9px 10px}.work-items{max-height:420px;overflow:auto}.work-item{padding:9px}.work-item strong{font-size:12px}.work-item small,.work-item span{font-size:10px}.gantt-head,.gantt-row{grid-template-columns:190px 1fr;min-width:1320px}.timeline-head{display:grid;grid-template-columns:repeat(29,1fr);min-width:1100px}.timeline-head>span{font-size:9px;padding:9px 0;border-right:1px solid #eceef4;white-space:nowrap}.timeline-row{display:block;min-width:1100px;background-image:linear-gradient(to right,#eef0f5 1px,transparent 1px);background-size:calc(100% / 29) 100%;position:relative}.today-marker{left:50%;background:#4f6fff;width:2px}.published-bar,.proposed-bar,.draft-bar{top:21px;height:28px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.published-bar{color:#fff;border:1px solid rgba(0,0,0,.08)}.published-bar.overdue{background:#cf4248}.published-bar.inprogress{background:#3f7bd9}.published-bar.notstarted{background:#8d8a84}.published-bar.completed{background:#2f9b57}.published-bar.deemphasized{opacity:.25}.published-bar.current-selected{box-shadow:0 0 0 2px var(--purple);z-index:4}.assignee-col strong{font-size:12px}.assignee-col span{font-size:10px}.timeline-legend{display:flex;gap:14px;align-items:center;margin-left:auto;font-size:10px;color:var(--muted)}.legend-dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px}.legend-dot.red{background:#cf4248}.legend-dot.blue{background:#3f7bd9}.legend-dot.gray{background:#8d8a84}.schedule-toolbar{gap:10px}.schedule-toolbar .mode-title{font-weight:700}.gantt-row{height:62px}.work-count{font-size:10px;color:var(--muted);margin-top:5px}.assignment-hint{font-size:10px;color:var(--muted);padding:8px 12px;background:#fafbfc;border-bottom:1px solid var(--border)}
+
+.person-anchor-row{background:#f7f2ff!important;box-shadow:inset 4px 0 0 var(--purple)}
+.person-anchor-row .assignee-name{color:#4f2fae}
+.person-anchor-row .assignee-name::after{content:"Finding work";display:inline-block;margin-left:8px;padding:2px 6px;border-radius:999px;background:#ede4ff;color:#5f3cc5;font-size:9px;font-weight:800;vertical-align:middle}
+.person-anchor-row .timeline-cell{background:linear-gradient(90deg,rgba(116,71,247,.07),rgba(116,71,247,.025))}
+.person-anchor-row .remaining{color:#6846cf!important;font-weight:800}
+.schedule-shell.editing-session .published-bar{opacity:.24;filter:grayscale(.78)}
+.schedule-shell.editing-session .published-bar.current-selected,
+.schedule-shell.editing-session .published-bar.reassign-source{opacity:1;filter:none}
+.schedule-shell.editing-session .draft-bar{opacity:1;filter:none}
+.draft-bar{position:absolute;border:2px solid var(--purple)!important;border-radius:6px;height:24px;top:10px;display:flex;align-items:center;justify-content:space-between;padding:0 5px;z-index:8;font-size:10px;overflow:visible}
+.draft-bar::before{content:"Draft";position:absolute;top:-16px;left:-2px;height:15px;line-height:15px;padding:0 5px;border-radius:4px 4px 0 0;background:var(--purple);color:white;font-size:8px;font-weight:800}
+.draft-bar.overdue{background:#cc3f42;color:#fff}
+.draft-bar.inprogress{background:#3d7edb;color:#fff}
+.draft-bar.notstarted{background:#99968e;color:#fff}
+.draft-bar.completed{background:#2e9c57;color:#fff}
+.draft-bar.conflict{box-shadow:0 0 0 2px #d97706}
+.draft-bar .conflict-label{position:absolute;right:2px;top:-17px;color:#8a5200;background:#fff4dd;border:1px solid #edc778;border-radius:4px;padding:1px 4px;font-size:8px}
+.work-item.drafted{background:#f7f4ff;border-color:#d8caff;opacity:.68}
+.work-item.drafted em{color:#603cc4;font-style:normal;font-weight:800}
+.published-bar.reassign-source{outline:2px dashed var(--purple);outline-offset:1px}
+.pending-source-label{position:absolute;top:1px;right:2px;font-size:8px;background:#efe8ff;color:#5e3fc1;border:1px solid #cdbbff;padding:1px 4px;border-radius:4px;z-index:5}
+
+.planning-outlook-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:stretch;margin-top:8px}
+.planning-outlook-chart{min-width:0}
+.week-summary{background:#f4f0ff;border:1px solid #ddd2ff;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.week-summary-head{display:flex;justify-content:space-between;align-items:center;color:#665c82;font-weight:700}
+.week-demand{font-size:28px;line-height:1;color:#20173a}
+.week-demand-label{display:block;margin-top:3px;font-size:11px;color:#665c82}
+.week-summary-metrics{display:grid;gap:8px}
+.week-summary-metrics>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:8px;border-top:1px solid #ddd2ff}
+.week-summary-metrics b{font-size:18px;color:#20173a}
+.week-summary-metrics span{font-size:10px;color:#665c82;text-align:right}
+.week-summary p{margin:0;padding-top:10px;border-top:1px solid #ddd2ff;color:#51466d;line-height:1.45}
+
+.current-assignee-row{background:#f5f0ff;box-shadow:inset 4px 0 0 var(--purple)}
+.current-assignee-row>.assignee-col{background:#f5f0ff}
+.current-assignee-row>.assignee-col strong{color:#5732bd}
+.current-assignee-row>.timeline-row{background:linear-gradient(90deg,rgba(116,71,247,.075),rgba(116,71,247,.025))}
+
+.capacity-title{color:#5f3cc5}
+.section-heading{display:flex;align-items:center;gap:7px}
+.section-heading .section-symbol{font-size:15px;font-weight:900}
+.portfolio-heading{color:#315ccf}.portfolio-heading .section-symbol{color:#315ccf}
+.summary-heading{color:#9a5b12}.summary-heading .section-symbol{color:#c47a16}
+.workspace-heading{color:#5a3db6}.workspace-heading .section-symbol{color:#7048d7}
+.horizon-select{appearance:auto;border:1px solid var(--border);background:white;border-radius:8px;padding:8px 28px 8px 10px;font:inherit;color:var(--text);cursor:pointer}
+.outlook-metrics{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;font-size:10px;color:var(--muted)}
+.outlook-metrics b{color:var(--text)}
+.gantt-row{min-height:70px;height:auto}
+.timeline-row{min-height:70px}
+.published-bar,.proposed-bar,.draft-bar{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.legend-dot.yellow{background:#d9a51f}
+.published-bar.atrisk{background:#9c9992;color:#fff;border:2px solid #e1ad25}
+.draft-atrisk{background:#99958e;color:#fff;box-shadow:inset 0 0 0 2px #e1ad25}
+.assignment-view-tabs{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-left:8px}
+.assignment-view-tabs button{border:0;background:#fff;padding:7px 12px;font:inherit;cursor:pointer}
+.assignment-view-tabs button.active{background:#eee7ff;color:#623fd0;font-weight:800}
+.view-hidden{display:none!important}
+.calendar-assignment-shell{display:grid;grid-template-columns:280px 1fr;height:720px;border:1px solid var(--border);background:#fff}
+.calendar-sidebar{border-right:1px solid var(--border);overflow:auto}
+.calendar-mini{padding:12px;border-bottom:1px solid var(--border)}
+.calendar-mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.calendar-mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:10px}
+.calendar-mini-grid span{padding:4px 2px;border-radius:5px}
+.calendar-mini-grid .muted{color:#b7bac2}.calendar-mini-grid .today-date{background:var(--purple);color:#fff;font-weight:800}
+.calendar-side-section{padding:12px;border-bottom:1px solid var(--border)}
+.calendar-side-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.calendar-side-head span{font-size:10px;color:var(--muted)}
+.calendar-multi-list{display:grid;gap:4px;max-height:180px;overflow:auto}
+.calendar-check-row{display:flex;align-items:flex-start;gap:8px;padding:6px;border-radius:6px;cursor:pointer}
+.calendar-check-row:hover{background:#f7f7fa}.calendar-check-row input{margin-top:3px;accent-color:var(--purple)}
+.calendar-check-row span{display:flex;flex-direction:column;gap:2px}.calendar-check-row b{font-size:11px}.calendar-check-row small{font-size:9px;color:var(--muted)}
+.calendar-anchor-person{background:#f3edff;box-shadow:inset 3px 0 0 var(--purple)}
+.weekly-calendar{overflow:auto;position:relative}
+.weekly-calendar-head{position:sticky;top:0;z-index:7;background:#fafbfc;padding:10px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.weekly-calendar-head>div:first-child{display:flex;flex-direction:column;gap:2px}.weekly-calendar-head span{font-size:10px;color:var(--muted)}
+.weekly-calendar-actions{display:flex;gap:6px}
+.calendar-week-header{display:grid;grid-template-columns:repeat(7,1fr);min-width:900px;margin-left:140px;border-bottom:1px solid var(--border)}
+.calendar-week-header div{padding:9px;text-align:center;border-right:1px solid #eceef4;color:var(--muted);font-size:10px}
+.calendar-week-header .today-col{background:#f0eaff;color:#6040c7;font-weight:800}
+.calendar-resource-list{min-width:0}
+.calendar-resource-row{display:grid;grid-template-columns:140px 1fr;min-height:66px;border-bottom:1px solid #edf0f4}
+.calendar-resource-name{padding:10px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+.calendar-resource-name b{font-size:11px;font-weight:600}.calendar-resource-name span{font-size:9px;color:var(--muted)}
+.calendar-resource-grid{position:relative;min-height:66px;background-image:linear-gradient(to right,#eceef4 1px,transparent 1px);background-size:14.2857% 100%}
+.calendar-today-column{position:absolute;left:42.857%;top:0;bottom:0;width:14.2857%;background:rgba(116,71,247,.045);border-left:1px solid #8767e5;border-right:1px solid rgba(135,103,229,.3)}
+.calendar-resource-anchor{background:#faf7ff;box-shadow:inset 4px 0 0 var(--purple)}
+.calendar-resource-anchor .calendar-resource-name{background:#f4efff}
+.calendar-work-bar,.calendar-proposed-bar,.calendar-draft-bar{position:absolute;top:19px;height:26px;border-radius:5px;padding:0 7px;display:flex;align-items:center;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:3}
+.calendar-work-bar.overdue{background:#cc3f42;color:#fff}.calendar-work-bar.inprogress{background:#3d7edb;color:#fff}.calendar-work-bar.notstarted{background:#99968e;color:#fff}.calendar-work-bar.completed{background:#2e9c57;color:#fff}.calendar-work-bar.atrisk{background:#99968e;color:#fff;border:2px solid #e1ad25}
+.calendar-proposed-bar{background:rgba(116,71,247,.10);border:2px dashed var(--purple);color:#5e3fc1;cursor:pointer}
+.calendar-draft-bar{border:2px solid var(--purple);justify-content:space-between;z-index:5}.calendar-draft-bar.overdue{background:#cc3f42;color:#fff}.calendar-draft-bar.inprogress{background:#3d7edb;color:#fff}.calendar-draft-bar.notstarted{background:#99968e;color:#fff}.calendar-draft-bar.atrisk{background:#99968e;color:#fff;box-shadow:inset 0 0 0 2px #e1ad25}.calendar-draft-bar button{border:0;background:transparent;color:inherit;font-weight:800}
+
+.calendar-filters{padding:12px;border-bottom:1px solid var(--border)}
+.calendar-work-list{padding:8px;display:grid;gap:7px;max-height:470px;overflow:auto}
+.calendar-work-card{display:grid;grid-template-columns:18px auto minmax(0,1fr) auto;align-items:start;gap:7px;border:1px solid var(--border);border-radius:8px;padding:8px;background:#fff;cursor:pointer}
+.calendar-work-card:hover{background:#fafafe}.calendar-work-card.selected{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple);background:#faf7ff}.calendar-work-card.drafted{opacity:.68;background:#f7f4ff}
+.calendar-work-card>input{margin-top:4px;accent-color:var(--purple)}
+.calendar-work-card>div{display:flex;flex-direction:column;gap:2px;min-width:0}.calendar-work-card small{font-size:9px;color:var(--muted)}.calendar-work-card strong{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.calendar-work-card>div>span{font-size:9px;color:var(--muted)}
+.calendar-work-card em{font-size:9px;color:#603cc4;font-style:normal;font-weight:800;align-self:center}
+.calendar-assignee-toolbar{display:flex;align-items:center;gap:12px;padding:7px 10px;border-bottom:1px solid var(--border);background:#fafbfc}
+.calendar-all-toggle{display:flex;align-items:center;gap:6px;color:#4d3a83}.calendar-all-toggle input{accent-color:var(--purple)}
+.calendar-assignee-toolbar span{font-size:10px;color:var(--muted)}
+.calendar-week-header{display:grid;grid-template-columns:140px repeat(7,minmax(0,1fr));margin-left:0}
+.calendar-week-header .resource-head{text-align:left;font-weight:800;color:var(--text)}
+.calendar-resource-row{min-height:58px;height:auto}
+.calendar-resource-name{display:flex;flex-direction:row;align-items:center;gap:8px;padding:7px 9px}
+.calendar-resource-name>div{display:flex;flex-direction:column;gap:1px;min-width:0}
+
+.calendar-resource-grid{min-height:58px}
+.calendar-work-bar,.calendar-proposed-bar,.calendar-draft-bar{height:24px}
+
+/* Person-first anchor uses the same emphasis level as Current Assignee */
+.gantt-row.anchor{background:#f5f0ff!important;box-shadow:inset 4px 0 0 var(--purple)!important}
+.gantt-row.anchor>.assignee-col{background:#f5f0ff!important}
+.gantt-row.anchor>.assignee-col strong{color:#5732bd!important}
+.gantt-row.anchor>.assignee-col strong::after{content:"Finding work";display:inline-block;margin-left:7px;padding:2px 6px;border-radius:999px;background:#e8ddff;color:#5c35c5;font-size:8px;font-weight:800;vertical-align:middle}
+.gantt-row.anchor>.timeline-row{background-color:#faf7ff;background-image:linear-gradient(to right,#eeeaf8 1px,transparent 1px)}
+.calendar-resource-anchor{background:#f5f0ff!important;box-shadow:inset 4px 0 0 var(--purple)!important}
+.calendar-resource-anchor .calendar-resource-name{background:#f5f0ff!important}
+.calendar-resource-anchor .calendar-resource-name b{color:#5732bd!important}
+.calendar-resource-anchor .calendar-resource-name b::after{content:"Finding work";display:inline-block;margin-left:6px;padding:2px 5px;border-radius:999px;background:#e8ddff;color:#5c35c5;font-size:8px;font-weight:800;vertical-align:middle}
+
+/* Persistent assignee selector */
+.calendar-assignee-selector{position:relative}
+.calendar-assignee-selector summary{list-style:none;cursor:pointer;border:1px solid var(--border);background:#fff;border-radius:7px;padding:7px 10px;font-size:10px;min-width:150px}
+.calendar-assignee-selector summary::-webkit-details-marker{display:none}
+.calendar-assignee-selector[open] summary{border-color:#bca8f8;box-shadow:0 0 0 2px rgba(116,71,247,.08)}
+.calendar-assignee-menu{position:absolute;right:0;top:38px;width:230px;max-height:310px;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:9px;box-shadow:0 10px 28px rgba(31,35,48,.14);padding:7px;z-index:40}
+.calendar-assignee-menu-head{display:flex;align-items:center;justify-content:space-between;padding:5px 6px 7px;border-bottom:1px solid #eef0f5;margin-bottom:4px}
+.calendar-assignee-menu-head button{border:0;background:transparent;color:#5e3fc5;font-weight:800;cursor:pointer}
+.calendar-assignee-option{display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer}
+.calendar-assignee-option:hover{background:#f7f4ff}
+.calendar-assignee-option input{accent-color:var(--purple)}
+.calendar-assignee-option span{display:flex;flex-direction:column}
+.calendar-assignee-option b{font-size:11px;font-weight:600}.calendar-assignee-option small{font-size:9px;color:var(--muted)}
+.calendar-week-nav{display:flex;align-items:center;gap:6px}.calendar-nav-date{font-size:10px;color:#4f5870;min-width:74px;text-align:center;font-weight:700}
+.calendar-week-nav .btn.icon{min-width:32px;padding:7px 9px;font-size:15px}
+
+.calendar-week-header{width:100%;min-width:0!important;grid-template-columns:140px repeat(7,minmax(0,1fr))!important}
+.calendar-resource-list{width:100%;min-width:0!important}
+.calendar-resource-row{grid-template-columns:140px minmax(0,1fr)!important;width:100%}
+.calendar-resource-grid{width:100%;min-width:0}
+.weekly-calendar{overflow-y:auto!important;overflow-x:hidden!important}
+.calendar-assignment-shell{min-width:0}
+.calendar-sidebar{min-width:0}
+.left-selector{width:100%}
+.left-selector summary{border:0;background:transparent;border-radius:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.left-selector summary span{font-weight:800;color:var(--text);font-size:10px}
+.left-selector summary small{color:var(--muted);font-size:8px;font-weight:500}
+.left-selector .calendar-assignee-menu{left:0;right:auto;top:34px}
+.calendar-current-assignee{background:#f5f0ff;box-shadow:inset 4px 0 0 var(--purple)}
+.calendar-current-assignee .calendar-resource-name{background:#f5f0ff}
+.calendar-current-assignee .calendar-resource-name b{color:#5732bd}
+.calendar-work-bar.current-selected{outline:2px solid var(--purple);outline-offset:1px;z-index:6}
+.calendar-work-bar.reassign-source{outline:2px dashed var(--purple);outline-offset:1px;z-index:6}
+.calendar-work-bar .pending-source-label{position:absolute;right:3px;top:2px;font-size:8px;background:#efe8ff;color:#5e3fc1;border:1px solid #cdbbff;padding:1px 4px;border-radius:4px}
+
+.calendar-work-bar.deemphasized{opacity:.22;filter:grayscale(.78)}
+.calendar-work-bar.current-selected,.calendar-work-bar.reassign-source,.calendar-draft-bar,.calendar-proposed-bar{opacity:1!important;filter:none!important}
+.calendar-assignee-actions{display:flex;align-items:center;gap:5px}.calendar-assignee-actions span{color:#a4a6ad}.calendar-assignee-actions button{padding:0}
+.calendar-empty-assignees{padding:28px;text-align:center;color:var(--muted);font-size:11px}
+.selection-index{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#6f48d7;color:#fff;font-size:9px;font-weight:800}
+.calendar-proposed-index{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;margin-right:5px;border-radius:999px;background:#6f48d7;color:#fff;font-size:9px;font-weight:800;flex:0 0 auto}
+
+.calendar-work-card[draggable="true"]{cursor:grab}
+.calendar-work-card[draggable="true"]:active{cursor:grabbing}
+.calendar-resource-grid.calendar-drop-target{background-color:#faf7ff;box-shadow:inset 0 0 0 2px rgba(116,71,247,.45)}
+.calendar-resource-grid.calendar-drop-target::after{content:"Drop to assign";position:absolute;right:8px;top:6px;padding:3px 7px;border-radius:999px;background:#ede5ff;color:#5d3ac4;font-size:9px;font-weight:800;z-index:12;pointer-events:none}
+.calendar-nav-date{min-width:118px!important;font-size:10px;color:#4f5870;text-align:center;font-weight:800}
+
+/* Typography normalization for Assignment surfaces */
+.workspace-radio span,
+.calendar-work-card strong,
+.work-item strong,
+.assignee-col strong,
+.calendar-resource-name b,
+.calendar-assignee-option b,
+.calendar-assignee-selector summary span{
+  font-family:inherit;
+  font-size:11px;
+  font-weight:600;
+  line-height:1.35;
+}
+
+.calendar-work-card strong,
+.work-item strong{
+  color:var(--text);
+}
+
+.calendar-work-card.selected strong,
+.work-item.selected strong,
+.gantt-row.anchor .assignee-col strong,
+.current-assignee-row>.assignee-col strong,
+.calendar-resource-anchor .calendar-resource-name b,
+.calendar-current-assignee .calendar-resource-name b{
+  font-weight:600;
+}
+
+.calendar-assignee-option small,
+.calendar-resource-name span,
+.assignee-col span{
+  font-family:inherit;
+}
+
+.calendar-nav-date,
+.calendar-week-nav .btn,
+.calendar-week-nav .btn.icon,
+.calendar-week-header>div{
+  font-family:inherit;
+  font-size:10px;
+  font-weight:600;
+  line-height:1.2;
+}
+
+.calendar-week-nav .btn.icon{
+  font-size:10px;
+  min-width:32px;
+}
+
+.calendar-nav-date{
+  min-width:118px!important;
+  text-align:center;
+  color:#4f5870;
+}
+
+.calendar-week-nav .btn{
+  min-height:30px;
+}
+
+/* v16 */
+.workspace-select{width:100%}
+.assignment-inline-note{display:flex;flex-direction:column;gap:3px;padding-top:7px;line-height:1.3}
+.assignment-inline-note b{font-size:10px;color:#4f5870;font-weight:600}
+.assignment-inline-note span{font-size:9px;color:var(--muted)}
+.calendar-work-card{text-align:left;width:100%;font-family:inherit}
+.outlook-cell.selected{background:#f7f3ff;box-shadow:inset 0 0 0 2px #cdbdff}
+.published-bar[draggable="true"],.calendar-work-bar[draggable="true"]{cursor:grab}
+.published-bar.dragging-reassign,.calendar-work-bar.dragging-reassign{opacity:.55!important;cursor:grabbing}
+
+/* v18: restore compact Work cards and normalize selection badge only */
+.work-item{
+  width:calc(100% - 16px);
+  margin:8px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:8px;
+  padding:9px 10px;
+  text-align:left;
+  display:flex!important;
+  justify-content:flex-start;
+  align-items:flex-start;
+  gap:10px;
+}
+.work-item>div{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  min-width:0;
+  flex:1;
+}
+.work-item>em{
+  margin-left:auto;
+  align-self:center;
+}
+.work-item.selected{
+  border:2px solid var(--purple);
+  background:#fbf9ff;
+}
+.work-item.drafted{
+  opacity:.58;
+}
+
+/* Calendar Work cards: restore prior compact structure */
+.calendar-work-card{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  align-items:start!important;
+  gap:7px!important;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+  background:#fff;
+  text-align:left;
+  width:100%;
+  font-family:inherit;
+}
+.calendar-work-card>div{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+}
+.calendar-work-card.selected{
+  border:2px solid var(--purple);
+  background:#faf7ff;
+}
+
+/* Shared 1 / 2 / 3 badge styling */
+.selection-index{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:18px!important;
+  min-width:18px!important;
+  height:18px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:999px!important;
+  background:#6f48d7!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:800!important;
+  line-height:18px!important;
+  flex:0 0 18px!important;
+  align-self:flex-start!important;
+}
+
+/* Match Gantt selected-card badge placement to Calendar */
+.work-item .selection-index{
+  margin-top:1px!important;
+}
+.calendar-work-card .selection-index{
+  margin-top:1px!important;
+}
+
+/* Configuration */
+.configuration-shell{max-width:1500px}
+.config-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;margin-top:18px}
+.config-type-list,.config-detail{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.config-list-head{padding:14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.config-search{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 9px}
+.config-type-item{width:100%;border:0;border-bottom:1px solid #eef0f4;background:#fff;padding:11px 14px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.config-type-item span{font-size:11px;font-weight:600}.config-type-item small{font-size:9px;color:var(--muted)}
+.config-type-item.active{background:#f5f0ff;box-shadow:inset 3px 0 0 var(--purple);color:#5732bd}
+.config-detail-head{padding:18px 20px 12px}.config-detail-head h2{margin:3px 0 0;font-size:20px}.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.config-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 20px}.config-tabs button{border:0;background:transparent;padding:10px 12px;color:var(--muted)}.config-tabs button.active{color:#5e3fc5;font-weight:700;border-bottom:2px solid var(--purple)}
+.config-panel{padding:18px 20px 24px}
+.config-master-toggle{display:flex;justify-content:space-between;align-items:center;padding:14px;border:1px solid var(--border);border-radius:9px;background:#fbfbfd}
+.config-master-toggle p,.config-section-title p{margin:3px 0 0;color:var(--muted);font-size:10px}
+.switch{position:relative;width:42px;height:24px;display:inline-block}.switch input{display:none}.switch span{position:absolute;inset:0;border-radius:999px;background:#c8cbd4}.switch span:after{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.15s}.switch input:checked+span{background:var(--purple)}.switch input:checked+span:after{transform:translateX(18px)}
+.config-content.disabled{opacity:.45;pointer-events:none}
+.config-section{padding:22px 0;border-bottom:1px solid #eef0f4}.config-section:last-child{border-bottom:0}
+.config-section-title{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}.config-section-title h3{margin:0;font-size:14px}.config-step{width:22px;height:22px;border-radius:999px;background:#efe8ff;color:#5f3fc5;display:grid;place-items:center;font-weight:800;font-size:10px}
+.config-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.config-choice{border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;gap:9px;align-items:flex-start;cursor:pointer}.config-choice.selected{border-color:#a78df3;background:#faf7ff}.config-choice input{margin-top:3px;accent-color:var(--purple)}.config-choice div{display:flex;flex-direction:column;gap:3px}.config-choice strong{font-size:11px}.config-choice span{font-size:10px;color:var(--muted);line-height:1.4}
+.status-role-table{margin-top:14px;border:1px solid var(--border);border-radius:9px;overflow:visible}.status-role-head,.status-role-row{display:grid;grid-template-columns:150px 260px minmax(240px,1fr);align-items:center;gap:10px;padding:10px 12px}.status-role-head{background:#f7f8fb;font-size:9px;color:var(--muted);text-transform:uppercase}.status-role-row{border-top:1px solid #eef0f4}.status-name{font-weight:600}.role-mode-select{border:1px solid var(--border);border-radius:7px;padding:7px}.role-multi.disabled{opacity:.45;pointer-events:none}.role-multi details{position:relative}.role-multi summary{list-style:none;border:1px solid var(--border);border-radius:7px;padding:7px 9px;cursor:pointer;background:#fff}.role-menu{position:absolute;top:36px;left:0;right:0;z-index:20;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 10px 24px rgba(31,35,48,.15);padding:7px;display:grid;gap:4px}.role-menu label{display:flex;gap:7px;align-items:center;padding:5px;border-radius:5px}.role-menu label:hover{background:#f7f4ff}.role-menu input{accent-color:var(--purple)}
+
+/* v20 — Work Type level Capacity Planning configuration */
+.type-config-page{background:#f6f6f8;min-height:100vh}
+.type-config-header{background:#fff;padding:28px 34px 22px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border)}
+.type-config-header h1{margin:0;font-size:28px;letter-spacing:-.02em}.type-config-header p{margin:10px 0 0;color:#555b68;font-size:13px}
+.type-config-actions{display:grid;grid-template-columns:auto auto;justify-items:end;gap:8px 10px}.type-config-actions .publish-meta{grid-column:1/3;display:flex;flex-direction:column;align-items:flex-end;color:#9699a2;font-size:10px;line-height:1.45}
+.btn.large,.icon-btn.large{font-size:12px;padding:10px 14px}.icon-btn.large{width:38px;height:38px}
+.type-tabs{background:#fff;display:flex;gap:16px;padding:0 28px;border-bottom:1px solid #cfd2d9;overflow-x:auto}.type-tabs button{border:0;background:transparent;padding:14px 10px 12px;font-size:12px;white-space:nowrap}.type-tabs button.active{color:#5b26cc;border-bottom:2px solid #5b26cc;font-weight:600}
+.type-config-main{padding:16px 28px 32px;margin-left:0!important}
+.config-card{background:#fff;border:1px solid #cfd2d9;border-radius:9px;overflow:visible}
+.config-card-header{padding:16px 18px;border-bottom:1px solid #d8dbe2;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.config-card-body{padding:0 18px 18px}
+.config-master-row{padding:18px 4px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eceef2}
+.config-master-row .field-label{font-size:12px;font-weight:600}.config-master-row p{margin:4px 0 0;font-size:10px;color:var(--muted)}
+.config-body-content.disabled{opacity:.45;pointer-events:none}
+.setting-block{padding:22px 4px;border-bottom:1px solid #eceef2}.setting-heading h3{margin:0;font-size:13px}.setting-heading p{margin:4px 0 14px;color:var(--muted);font-size:10px}
+.mode-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode-option{display:flex;gap:9px;padding:12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}.mode-option.selected{border-color:#9c79eb;background:#faf7ff}.mode-option input{margin-top:3px;accent-color:var(--purple)}.mode-option>div{display:flex;flex-direction:column;gap:3px}.mode-option strong{font-size:11px}.mode-option span{font-size:10px;color:var(--muted);line-height:1.35}
+.whole-hours-row{margin-top:14px;display:grid;grid-template-columns:220px 1fr;align-items:center;padding:12px;background:#fafbfc;border:1px solid #eceef2;border-radius:8px}.whole-hours-row>label{font-size:11px;font-weight:600}
+.hours-input-wrap{display:flex;align-items:center;gap:7px}.hours-input-wrap input{width:120px;border:1px solid var(--border);border-radius:7px;padding:8px 9px}.hours-input-wrap span{font-size:10px;color:var(--muted)}.hours-input-wrap.compact input{width:80px;padding:7px}
+.status-config-table{margin-top:14px;border:1px solid var(--border);border-radius:8px;overflow:visible}.status-config-head,.status-config-row{display:grid;grid-template-columns:150px 180px 260px minmax(240px,1fr);align-items:center;gap:10px;padding:10px 12px}.status-config-head{background:#f7f8fa;color:var(--muted);font-size:9px;text-transform:uppercase}.status-config-row{border-top:1px solid #eceef2}.status-name{font-size:11px;font-weight:600}
+.config-save-row{display:flex;justify-content:flex-end;padding-top:18px}
+
+.schedule-field-row{margin-top:14px;display:grid;grid-template-columns:minmax(260px,1fr) 360px;gap:18px;align-items:center;padding:14px;background:#fafbfc;border:1px solid #eceef2;border-radius:8px}
+.schedule-field-row label{font-size:11px;font-weight:600}
+.schedule-field-row p{margin:4px 0 0;font-size:10px;color:var(--muted);line-height:1.4}
+.field-source-select{width:100%;border:1px solid var(--border);border-radius:7px;padding:8px 9px;background:#fff}
+@media(max-width:1050px){.planning-outlook-layout{grid-template-columns:1fr}.workspace-grid{grid-template-columns:1fr}.portfolio-grid{grid-template-columns:1fr}.attention-row{grid-template-columns:1fr 1fr}.diagnosis{grid-template-columns:1fr 1fr}.risk-grid{grid-template-columns:1fr}.schedule-main{grid-template-columns:280px 1fr}}
+</style></head><body><div id="app"></div><script>(function(){
+  const CP = window.CP = window.CP || {};
+  CP.weeks = [
+    {label:'Sep 6–12',short:'Sep 6',start:'2026-09-06',end:'2026-09-12'},
+    {label:'Sep 13–19',short:'Sep 13',start:'2026-09-13',end:'2026-09-19'},
+    {label:'Sep 20–26',short:'Sep 20',start:'2026-09-20',end:'2026-09-26'},
+    {label:'Sep 27–Oct 3',short:'Sep 27',start:'2026-09-27',end:'2026-10-03'},
+    {label:'Oct 4–10',short:'Oct 4',start:'2026-10-04',end:'2026-10-10'},
+    {label:'Oct 11–17',short:'Oct 11',start:'2026-10-11',end:'2026-10-17'}
+  ];
+  CP.workspaceSeeds = {
+    W1:{id:'W1',name:'Workspace 1',subtitle:'Transmission Line Inspection',displayName:'Workspace 1 — Transmission Line Inspection',weekly:[{total:102,assigned:68,unassigned:34},{total:118,assigned:88,unassigned:30},{total:136,assigned:112,unassigned:24},{total:142,assigned:118,unassigned:24},{total:150,assigned:126,unassigned:24},{total:132,assigned:118,unassigned:14}]},
+    W2:{id:'W2',name:'Workspace 2',subtitle:'Substation Upgrade',displayName:'Workspace 2 — Substation Upgrade',weekly:[{total:87,assigned:71,unassigned:16},{total:112,assigned:94,unassigned:18},{total:148,assigned:126,unassigned:22},{total:196,assigned:158,unassigned:38},{total:214,assigned:168,unassigned:46},{total:172,assigned:151,unassigned:21}]},
+    W3:{id:'W3',name:'Workspace 3',subtitle:'Riverside Service Upgrade',displayName:'Workspace 3 — Riverside Service Upgrade',weekly:[{total:95,assigned:82,unassigned:13},{total:104,assigned:91,unassigned:13},{total:118,assigned:102,unassigned:16},{total:142,assigned:120,unassigned:22},{total:155,assigned:127,unassigned:28},{total:125,assigned:111,unassigned:14}]}
+  };
+  CP.peopleSeed = {
+    nina:{id:'nina',name:'Nina Torres',capacity:40,memberships:['W1'],committed:[12,16,20,32,35,31]},
+    cameron:{id:'cameron',name:'Cameron Carter',capacity:40,memberships:['W1'],committed:[10,14,18,32,34,29]},
+    grace:{id:'grace',name:'Grace Lin',capacity:40,memberships:['W3'],committed:[14,17,22,24,30,27]},
+    alex:{id:'alex',name:'Alex Morgan',capacity:40,memberships:['W1','W3'],committed:[30,34,40,38,39,37]},
+    jordan:{id:'jordan',name:'Jordan Lee',capacity:40,memberships:['W1','W3'],committed:[26,32,38,37,38,35]},
+    tom:{id:'tom',name:'Tom Brown',capacity:40,memberships:['W1','W3'],committed:[30,33,39,37,39,35]},
+    liz:{id:'liz',name:'Liz Hoffman',capacity:40,memberships:['W1','W3'],committed:[28,33,37,38,38,35]},
+    marcus:{id:'marcus',name:'Marcus Reed',capacity:40,memberships:['W2'],committed:[16,20,27,34,36,33]},
+    amy:{id:'amy',name:'Amy Lee',capacity:40,memberships:['W2'],committed:[15,19,26,33,35,31]},
+    daniel:{id:'daniel',name:'Daniel Ortiz',capacity:40,memberships:['W2'],committed:[14,19,25,32,34,30]},
+    rachel:{id:'rachel',name:'Rachel Wong',capacity:40,memberships:['W2'],committed:[13,18,24,30,32,29]},
+    priya:{id:'priya',name:'Priya Shah',capacity:40,memberships:['W2'],committed:[13,18,24,29,31,28]}
+  };
+  CP.workSeed = [
+    // Workspace 1 — Transmission Line Inspection
+    {id:'W1-U-01',workspaceId:'W1',title:'Protection Relay Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:4,assignedTo:null,status:'Overdue',start:'2026-08-28',end:'2026-09-01'},
+    {id:'W1-U-02',workspaceId:'W1',title:'Field Engineering Review',workType:'Engineering Design',type:'Work',weekIndex:0,hours:4,assignedTo:null,status:'In Progress',start:'2026-08-30',end:'2026-09-08'},
+    {id:'W1-U-03',workspaceId:'W1',title:'Final Design Approval',workType:'Engineering Design',type:'Task',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-08',end:'2026-09-12'},
+    {id:'W1-U-04',workspaceId:'W1',title:'Permit Package Review',workType:'Permit Review',type:'Work',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-10',end:'2026-09-12'},
+    {id:'W1-U-05',workspaceId:'W1',title:'Load Calculation Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-08',end:'2026-09-10'},
+    {id:'W1-U-06',workspaceId:'W1',title:'Transformer Assessment',workType:'Engineering Design',type:'Work',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-12',end:'2026-09-14'},
+    {id:'W1-U-07',workspaceId:'W1',title:'Pole Loading Check',workType:'Structural Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-09',end:'2026-09-10'},
+    {id:'W1-U-08',workspaceId:'W1',title:'Right-of-Way Verification',workType:'Field Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-11',end:'2026-09-12'},
+    {id:'W1-U-09',workspaceId:'W1',title:'Construction Notes Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-13',end:'2026-09-15'},
+    {id:'W1-U-10',workspaceId:'W1',title:'Environmental Constraint Check',workType:'Environmental Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-14',end:'2026-09-15'},
+    {id:'W1-U-11',workspaceId:'W1',title:'Utility Crossing Review',workType:'Field Review',type:'Task',weekIndex:0,hours:3,assignedTo:null,status:'Not Started',start:'2026-09-15',end:'2026-09-17'},
+    {id:'W1-U-12',workspaceId:'W1',title:'Inspection Readiness Check',workType:'Field Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-16',end:'2026-09-17'},
+    {id:'W1-A-01',workspaceId:'W1',title:'Conductor Clearance Analysis',workType:'Engineering Design',type:'Task',weekIndex:0,hours:6,assignedTo:'alex',status:'In Progress',start:'2026-08-29',end:'2026-09-07'},
+    {id:'W1-A-02',workspaceId:'W1',title:'Structure Foundation Review',workType:'Structural Review',type:'Work',weekIndex:0,hours:5,assignedTo:'nina',status:'Overdue',start:'2026-08-22',end:'2026-08-29'},
+    {id:'W1-A-03',workspaceId:'W1',title:'Permit Agency Coordination',workType:'Permit Review',type:'Work',weekIndex:0,hours:4,assignedTo:'jordan',status:'In Progress',start:'2026-09-01',end:'2026-09-08'},
+    {id:'W1-A-04',workspaceId:'W1',title:'Field Access Confirmation',workType:'Field Review',type:'Task',weekIndex:0,hours:4,assignedTo:'cameron',status:'Not Started',start:'2026-09-07',end:'2026-09-10'},
+    {id:'W1-A-05',workspaceId:'W1',title:'Material Takeoff Validation',workType:'Engineering Design',type:'Task',weekIndex:0,hours:5,assignedTo:'tom',status:'Overdue',start:'2026-08-25',end:'2026-09-01'},
+    {id:'W1-A-06',workspaceId:'W1',title:'Final Drawing Package',workType:'Engineering Design',type:'Work',weekIndex:0,hours:6,assignedTo:'liz',status:'Not Started',start:'2026-09-09',end:'2026-09-15'},
+
+    // Workspace 2 — Substation Upgrade
+    {id:'W2-U-01',workspaceId:'W2',title:'Relay Settings Review',workType:'Protection',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-07',end:'2026-09-08'},
+    {id:'W2-U-02',workspaceId:'W2',title:'Outage Coordination',workType:'Operations',type:'Work',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-09',end:'2026-09-10'},
+    {id:'W2-U-03',workspaceId:'W2',title:'Breaker Specification Check',workType:'Engineering Design',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-10',end:'2026-09-11'},
+    {id:'W2-U-04',workspaceId:'W2',title:'Ground Grid Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-11',end:'2026-09-12'},
+    {id:'W2-U-05',workspaceId:'W2',title:'SCADA Point Validation',workType:'Controls',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-12',end:'2026-09-13'},
+    {id:'W2-U-06',workspaceId:'W2',title:'Cable Routing Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-13',end:'2026-09-14'},
+    {id:'W2-U-07',workspaceId:'W2',title:'Equipment Layout Check',workType:'Engineering Design',type:'Work',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-14',end:'2026-09-15'},
+    {id:'W2-U-08',workspaceId:'W2',title:'Protection One-Line Review',workType:'Protection',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-15',end:'2026-09-16'},
+    {id:'W2-U-09',workspaceId:'W2',title:'Station Service Load Check',workType:'Engineering Design',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-16',end:'2026-09-17'},
+    {id:'W2-U-10',workspaceId:'W2',title:'Commissioning Checklist Review',workType:'Commissioning',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-16',end:'2026-09-17'},
+    {id:'W2-A-01',workspaceId:'W2',title:'Substation Civil Package',workType:'Civil',type:'Work',weekIndex:0,hours:6,assignedTo:'marcus',status:'In Progress',start:'2026-08-28',end:'2026-09-06'},
+    {id:'W2-A-02',workspaceId:'W2',title:'Relay Panel Wiring Review',workType:'Protection',type:'Task',weekIndex:0,hours:5,assignedTo:'amy',status:'Overdue',start:'2026-08-22',end:'2026-08-30'},
+    {id:'W2-A-03',workspaceId:'W2',title:'Transformer Foundation Detail',workType:'Civil',type:'Task',weekIndex:0,hours:4,assignedTo:'daniel',status:'Not Started',start:'2026-09-08',end:'2026-09-12'},
+    {id:'W2-A-04',workspaceId:'W2',title:'Control Building Layout',workType:'Controls',type:'Work',weekIndex:0,hours:5,assignedTo:'rachel',status:'In Progress',start:'2026-08-31',end:'2026-09-09'},
+
+    // Workspace 3 — Riverside Service Upgrade
+    {id:'W3-U-01',workspaceId:'W3',title:'Traffic Control Plan',workType:'Field Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-07',end:'2026-09-08'},
+    {id:'W3-U-02',workspaceId:'W3',title:'Field Verification',workType:'Field Review',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-08',end:'2026-09-09'},
+    {id:'W3-U-03',workspaceId:'W3',title:'Service Point Confirmation',workType:'Engineering Design',type:'Task',weekIndex:0,hours:2,assignedTo:null,status:'Not Started',start:'2026-09-09',end:'2026-09-10'},
+    {id:'W3-U-04',workspaceId:'W3',title:'Meter Location Review',workType:'Field Review',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-10',end:'2026-09-11'},
+    {id:'W3-U-05',workspaceId:'W3',title:'Customer Access Coordination',workType:'Customer Coordination',type:'Work',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-11',end:'2026-09-12'},
+    {id:'W3-U-06',workspaceId:'W3',title:'Trench Route Validation',workType:'Engineering Design',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-12',end:'2026-09-13'},
+    {id:'W3-U-07',workspaceId:'W3',title:'Temporary Service Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-13',end:'2026-09-14'},
+    {id:'W3-U-08',workspaceId:'W3',title:'Restoration Plan Check',workType:'Field Review',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-14',end:'2026-09-15'},
+    {id:'W3-U-09',workspaceId:'W3',title:'As-Built Markup Review',workType:'Engineering Design',type:'Task',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-15',end:'2026-09-16'},
+    {id:'W3-U-10',workspaceId:'W3',title:'Final Service Release',workType:'Customer Coordination',type:'Work',weekIndex:0,hours:1,assignedTo:null,status:'Not Started',start:'2026-09-16',end:'2026-09-17'},
+    {id:'W3-A-01',workspaceId:'W3',title:'Primary Route Design',workType:'Engineering Design',type:'Work',weekIndex:0,hours:6,assignedTo:'alex',status:'In Progress',start:'2026-08-29',end:'2026-09-07'},
+    {id:'W3-A-02',workspaceId:'W3',title:'Traffic Permit Coordination',workType:'Permit Review',type:'Work',weekIndex:0,hours:4,assignedTo:'jordan',status:'Overdue',start:'2026-08-23',end:'2026-08-31'},
+    {id:'W3-A-03',workspaceId:'W3',title:'Service Equipment Detail',workType:'Engineering Design',type:'Task',weekIndex:0,hours:4,assignedTo:'grace',status:'Not Started',start:'2026-09-08',end:'2026-09-12'},
+    {id:'W3-A-04',workspaceId:'W3',title:'Customer Cutover Plan',workType:'Customer Coordination',type:'Task',weekIndex:0,hours:4,assignedTo:'tom',status:'In Progress',start:'2026-09-01',end:'2026-09-08'}
+  ];
+
+  CP.schedulePeopleSeed = {
+    W1:[
+      {id:'alex',name:'Alex Morgan',remaining:10},{id:'nina',name:'Nina Torres',remaining:28},{id:'jordan',name:'Jordan Lee',remaining:14},{id:'cameron',name:'Cameron Carter',remaining:30},{id:'tom',name:'Tom Brown',remaining:10},{id:'liz',name:'Liz Hoffman',remaining:12},
+      {id:'david',name:'David Kim',remaining:22},{id:'kevin',name:'Kevin Park',remaining:32},{id:'maya',name:'Maya Chen',remaining:18},{id:'ethan',name:'Ethan Brooks',remaining:26},{id:'sophia',name:'Sophia Patel',remaining:24},{id:'olivia',name:'Olivia Grant',remaining:36}
+    ],
+    W2:[
+      {id:'marcus',name:'Marcus Reed',remaining:24},{id:'amy',name:'Amy Lee',remaining:25},{id:'daniel',name:'Daniel Ortiz',remaining:26},{id:'rachel',name:'Rachel Wong',remaining:27},{id:'priya',name:'Priya Shah',remaining:27},
+      {id:'henry',name:'Henry Cole',remaining:20},{id:'zoe',name:'Zoe Martin',remaining:28},{id:'sam',name:'Sam Rivera',remaining:16},{id:'leah',name:'Leah Scott',remaining:30},{id:'noah',name:'Noah Bennett',remaining:34}
+    ],
+    W3:[
+      {id:'grace',name:'Grace Lin',remaining:26},{id:'alex',name:'Alex Morgan',remaining:10},{id:'jordan',name:'Jordan Lee',remaining:14},{id:'tom',name:'Tom Brown',remaining:10},{id:'liz',name:'Liz Hoffman',remaining:12},
+      {id:'mia',name:'Mia Foster',remaining:24},{id:'leo',name:'Leo Turner',remaining:30},{id:'ava',name:'Ava Collins',remaining:20},{id:'owen',name:'Owen Price',remaining:28},{id:'chloe',name:'Chloe Adams',remaining:32}
+    ]
+  };
+  CP.existingScheduleSeed = {
+    W1:[
+      {personId:'alex',workId:'W1-A-01',title:'Conductor Clearance Analysis',start:'2026-08-29',end:'2026-09-07',status:'In Progress'},
+      {personId:'nina',workId:'W1-A-02',title:'Structure Foundation Review',start:'2026-08-22',end:'2026-08-29',status:'Overdue'},
+      {personId:'nina',title:'Inspection Photo Review',start:'2026-09-08',end:'2026-09-11',status:'Not Started'},
+      {personId:'jordan',workId:'W1-A-03',title:'Permit Agency Coordination',start:'2026-09-01',end:'2026-09-08',status:'In Progress'},
+      {personId:'jordan',title:'Easement Document Check',start:'2026-08-21',end:'2026-08-26',status:'Overdue'},
+      {personId:'cameron',workId:'W1-A-04',title:'Field Access Confirmation',start:'2026-09-07',end:'2026-09-10',status:'Not Started'},
+      {personId:'tom',workId:'W1-A-05',title:'Material Takeoff Validation',start:'2026-08-25',end:'2026-09-01',status:'Overdue'},
+      {personId:'tom',title:'Construction Package Review',start:'2026-09-05',end:'2026-09-09',status:'Not Started'},
+      {personId:'liz',workId:'W1-A-06',title:'Final Drawing Package',start:'2026-09-09',end:'2026-09-15',status:'Not Started'},
+      {personId:'david',title:'Route Constraint Review',start:'2026-08-27',end:'2026-09-05',status:'In Progress'},
+      {personId:'kevin',title:'Pole Framing Check',start:'2026-08-20',end:'2026-08-25',status:'Overdue'},
+      {personId:'maya',title:'Environmental Field Notes',start:'2026-09-06',end:'2026-09-12',status:'Not Started'},
+      {personId:'ethan',title:'Survey Control Verification',start:'2026-08-31',end:'2026-09-06',status:'In Progress'},
+      {personId:'sophia',title:'Construction Staging Review',start:'2026-09-12',end:'2026-09-16',status:'Not Started'}
+    ],
+    W2:[
+      {personId:'marcus',workId:'W2-A-01',title:'Substation Civil Package',start:'2026-08-28',end:'2026-09-06',status:'In Progress'},
+      {personId:'amy',workId:'W2-A-02',title:'Relay Panel Wiring Review',start:'2026-08-22',end:'2026-08-30',status:'Overdue'},
+      {personId:'daniel',workId:'W2-A-03',title:'Transformer Foundation Detail',start:'2026-09-08',end:'2026-09-12',status:'Not Started'},
+      {personId:'rachel',workId:'W2-A-04',title:'Control Building Layout',start:'2026-08-31',end:'2026-09-09',status:'In Progress'},
+      {personId:'priya',title:'Commissioning Sequence Review',start:'2026-09-10',end:'2026-09-16',status:'Not Started'},
+      {personId:'henry',title:'Station Grounding Detail',start:'2026-08-20',end:'2026-08-27',status:'Overdue'},
+      {personId:'zoe',title:'Protection Logic Review',start:'2026-09-05',end:'2026-09-11',status:'Not Started'},
+      {personId:'sam',title:'Cable Schedule Validation',start:'2026-08-29',end:'2026-09-05',status:'In Progress'}
+    ],
+    W3:[
+      {personId:'alex',workId:'W3-A-01',title:'Primary Route Design',start:'2026-08-29',end:'2026-09-07',status:'In Progress'},
+      {personId:'jordan',workId:'W3-A-02',title:'Traffic Permit Coordination',start:'2026-08-23',end:'2026-08-31',status:'Overdue'},
+      {personId:'grace',workId:'W3-A-03',title:'Service Equipment Detail',start:'2026-09-08',end:'2026-09-12',status:'Not Started'},
+      {personId:'tom',workId:'W3-A-04',title:'Customer Cutover Plan',start:'2026-09-01',end:'2026-09-08',status:'In Progress'},
+      {personId:'liz',title:'Restoration Drawing Review',start:'2026-09-10',end:'2026-09-15',status:'Not Started'},
+      {personId:'mia',title:'Service Trench Inspection',start:'2026-08-21',end:'2026-08-28',status:'Overdue'},
+      {personId:'leo',title:'Meter Set Coordination',start:'2026-09-06',end:'2026-09-10',status:'Not Started'}
+    ]
+  };
+  CP.unphasedSeed = [
+    // Workspace 1 — Transmission Line Inspection: 15 items / 86h
+    {id:'U-W1-01',workspaceId:'W1',title:'Inspection Sign-off',type:'Task',hours:8,due:'2026-09-12',urgency:'Due in 1–2 weeks'},
+    {id:'U-W1-02',workspaceId:'W1',title:'Cost Estimate Review',type:'Task',hours:6,due:'2026-09-20',urgency:'Due in 1–2 weeks'},
+    {id:'U-W1-03',workspaceId:'W1',title:'Permit Review',type:'Work',hours:7,due:'2026-10-08',urgency:'Later'},
+    {id:'U-W1-04',workspaceId:'W1',title:'Pole Loading Validation',type:'Task',hours:5,due:'2026-09-18',urgency:'Due in 1–2 weeks'},
+    {id:'U-W1-05',workspaceId:'W1',title:'Right-of-Way Package Review',type:'Work',hours:8,due:'2026-09-25',urgency:'Due in 3–4 weeks'},
+    {id:'U-W1-06',workspaceId:'W1',title:'Environmental Constraint Review',type:'Task',hours:4,due:'2026-09-26',urgency:'Due in 3–4 weeks'},
+    {id:'U-W1-07',workspaceId:'W1',title:'Structure Loading Memo',type:'Task',hours:6,due:'2026-09-29',urgency:'Due in 3–4 weeks'},
+    {id:'U-W1-08',workspaceId:'W1',title:'Access Road Coordination',type:'Work',hours:5,due:'2026-10-01',urgency:'Due in 3–4 weeks'},
+    {id:'U-W1-09',workspaceId:'W1',title:'Survey Control Review',type:'Task',hours:4,due:'2026-10-03',urgency:'Due in 3–4 weeks'},
+    {id:'U-W1-10',workspaceId:'W1',title:'Construction Notes Package',type:'Work',hours:7,due:'2026-10-05',urgency:'Later'},
+    {id:'U-W1-11',workspaceId:'W1',title:'Utility Crossing Coordination',type:'Task',hours:5,due:'2026-10-07',urgency:'Later'},
+    {id:'U-W1-12',workspaceId:'W1',title:'Material Takeoff Review',type:'Task',hours:4,due:'2026-10-09',urgency:'Later'},
+    {id:'U-W1-13',workspaceId:'W1',title:'Inspection Readiness Package',type:'Work',hours:6,due:'2026-10-10',urgency:'Later'},
+    {id:'U-W1-14',workspaceId:'W1',title:'Final Engineering Check',type:'Task',hours:5,due:'2026-10-12',urgency:'Later'},
+    {id:'U-W1-15',workspaceId:'W1',title:'Closeout Documentation Prep',type:'Task',hours:6,due:'2026-10-15',urgency:'Later'},
+
+    // Workspace 2 — Substation Upgrade: 12 items / 52h
+    {id:'U-W2-01',workspaceId:'W2',title:'Relay Settings Review',type:'Task',hours:6,due:'2026-09-22',urgency:'Due in 1–2 weeks'},
+    {id:'U-W2-02',workspaceId:'W2',title:'Outage Coordination',type:'Work',hours:6,due:'2026-09-25',urgency:'Due in 3–4 weeks'},
+    {id:'U-W2-03',workspaceId:'W2',title:'Ground Grid Detail Review',type:'Task',hours:4,due:'2026-09-28',urgency:'Due in 3–4 weeks'},
+    {id:'U-W2-04',workspaceId:'W2',title:'Protection One-Line Check',type:'Task',hours:4,due:'2026-09-30',urgency:'Due in 3–4 weeks'},
+    {id:'U-W2-05',workspaceId:'W2',title:'SCADA Point List Review',type:'Task',hours:3,due:'2026-10-02',urgency:'Due in 3–4 weeks'},
+    {id:'U-W2-06',workspaceId:'W2',title:'Cable Routing Package',type:'Work',hours:5,due:'2026-10-05',urgency:'Later'},
+    {id:'U-W2-07',workspaceId:'W2',title:'Equipment Layout Validation',type:'Task',hours:4,due:'2026-10-07',urgency:'Later'},
+    {id:'U-W2-08',workspaceId:'W2',title:'Commissioning Sequence',type:'Work',hours:5,due:'2026-10-09',urgency:'Later'},
+    {id:'U-W2-09',workspaceId:'W2',title:'Station Service Load Check',type:'Task',hours:3,due:'2026-10-11',urgency:'Later'},
+    {id:'U-W2-10',workspaceId:'W2',title:'Breaker Specification Review',type:'Task',hours:4,due:'2026-10-13',urgency:'Later'},
+    {id:'U-W2-11',workspaceId:'W2',title:'Control Building Detail',type:'Task',hours:4,due:'2026-10-15',urgency:'Later'},
+    {id:'U-W2-12',workspaceId:'W2',title:'Energization Readiness Review',type:'Work',hours:4,due:'2026-10-17',urgency:'Later'},
+
+    // Workspace 3 — Riverside Service Upgrade: 12 items / 48h
+    {id:'U-W3-01',workspaceId:'W3',title:'Traffic Control Plan',type:'Task',hours:4,due:'2026-09-18',urgency:'Due in 1–2 weeks'},
+    {id:'U-W3-02',workspaceId:'W3',title:'Field Verification Package',type:'Task',hours:5,due:'2026-09-21',urgency:'Due in 1–2 weeks'},
+    {id:'U-W3-03',workspaceId:'W3',title:'Service Point Confirmation',type:'Task',hours:4,due:'2026-09-24',urgency:'Due in 3–4 weeks'},
+    {id:'U-W3-04',workspaceId:'W3',title:'Meter Location Review',type:'Task',hours:3,due:'2026-09-26',urgency:'Due in 3–4 weeks'},
+    {id:'U-W3-05',workspaceId:'W3',title:'Customer Access Coordination',type:'Work',hours:5,due:'2026-09-28',urgency:'Due in 3–4 weeks'},
+    {id:'U-W3-06',workspaceId:'W3',title:'Trench Route Validation',type:'Task',hours:4,due:'2026-09-30',urgency:'Due in 3–4 weeks'},
+    {id:'U-W3-07',workspaceId:'W3',title:'Temporary Service Review',type:'Task',hours:4,due:'2026-10-02',urgency:'Due in 3–4 weeks'},
+    {id:'U-W3-08',workspaceId:'W3',title:'Restoration Plan Check',type:'Task',hours:3,due:'2026-10-04',urgency:'Later'},
+    {id:'U-W3-09',workspaceId:'W3',title:'As-Built Markup Review',type:'Task',hours:4,due:'2026-10-06',urgency:'Later'},
+    {id:'U-W3-10',workspaceId:'W3',title:'Final Service Release',type:'Work',hours:5,due:'2026-10-09',urgency:'Later'},
+    {id:'U-W3-11',workspaceId:'W3',title:'Utility Locate Confirmation',type:'Task',hours:3,due:'2026-10-12',urgency:'Later'},
+    {id:'U-W3-12',workspaceId:'W3',title:'Customer Cutover Readiness',type:'Work',hours:4,due:'2026-10-15',urgency:'Later'}
+  ];
+  CP.clone = (v)=>JSON.parse(JSON.stringify(v));
+  CP.createState = function(){ return {
+    view:'portfolio', workspaceId:null, selectedWeek:null, portfolioWeek:0, scheduleMode:'work', scheduleTab:'Unassigned', personAnchor:null, selectedGanttWorkIds:[],
+    assignmentView:'timeline', selectedCalendarWorkIds:[], selectedCalendarAssigneeIds:[], calendarWeekOffset:0,
+    people:CP.clone(CP.peopleSeed), work:CP.clone(CP.workSeed), unphased:CP.clone(CP.unphasedSeed),
+    publishedAssignments:[], phasedFromUnphased:[], drafts:[], selectedWorkId:null, sidePanel:null, toast:null, objectFilter:'All', workTypeFilter:'All types', searchTerm:'',
+    configType:'Engineering Design',
+    configTab:'Capacity Planning',
+    config:{
+      capacityPlanningEnabled:true,
+      pwhMode:'whole',
+      wholeHours:8,
+      scheduleRequirement:'specific',
+      scheduleField:'Scheduled Date & Time',
+      dueDateField:'Due Date',
+      statusRoles:{
+        'New':{hours:2,mode:'any',roles:[]},
+        'In Progress':{hours:8,mode:'specific',roles:['Engineering Designer']},
+        'Review':{hours:4,mode:'specific',roles:['Reviewer','Project Engineer']},
+        'Completed':{hours:1,mode:'any',roles:[]}
+      }
+    }
+  };};
+  CP.derive = function(state){
+    const people=CP.clone(state.people);
+    Object.values(people).forEach(p=>p.remaining=p.committed.map(c=>Math.max(0,p.capacity-c)));
+    const weekly={}; Object.keys(CP.workspaceSeeds).forEach(id=>weekly[id]=CP.clone(CP.workspaceSeeds[id].weekly));
+    state.publishedAssignments.forEach(a=>{
+      const w=[...state.work,...state.phasedFromUnphased].find(x=>x.id===a.workId); if(!w)return;
+      const wk=weekly[w.workspaceId][w.weekIndex];
+      if(w.assignedTo){
+        if(w.assignedTo!==a.toPersonId){
+          if(people[w.assignedTo]) people[w.assignedTo].committed[w.weekIndex]=Math.max(0,people[w.assignedTo].committed[w.weekIndex]-w.hours);
+          if(people[a.toPersonId]) people[a.toPersonId].committed[w.weekIndex]+=w.hours;
+        }
+      } else {
+        wk.assigned+=w.hours; wk.unassigned=Math.max(0,wk.unassigned-w.hours);
+        if(people[a.toPersonId]) people[a.toPersonId].committed[w.weekIndex]+=w.hours;
+      }
+      Object.values(people).forEach(p=>p.remaining=p.committed.map(c=>Math.max(0,p.capacity-c)));
+    });
+    state.phasedFromUnphased.forEach(w=>{ const wk=weekly[w.workspaceId][w.weekIndex]; wk.total+=w.hours; wk.unassigned+=w.hours; });
+    const workspaces={};
+    Object.values(CP.workspaceSeeds).forEach(ws=>{
+      const members=Object.values(people).filter(p=>p.memberships.includes(ws.id));
+      const items=state.unphased.filter(x=>x.workspaceId===ws.id);
+      workspaces[ws.id]={...ws, weekly:weekly[ws.id].map((w,i)=>({...w,available:members.reduce((s,p)=>s+p.remaining[i],0)})), unphasedItems:items, unphasedHours:items.reduce((s,x)=>s+x.hours,0), members};
+    });
+    const portfolio=CP.weeks.map((_,i)=>{const all=Object.values(workspaces).map(w=>w.weekly[i]); const total=all.reduce((s,x)=>s+x.total,0),assigned=all.reduce((s,x)=>s+x.assigned,0),unassigned=all.reduce((s,x)=>s+x.unassigned,0),committed=Object.values(people).reduce((s,p)=>s+p.committed[i],0);return{total,assigned,unassigned,committed,remaining:480-committed};});
+    const sharedPressure=CP.weeks.map((_,i)=>{const ids=['nina','cameron','grace','alex','jordan','tom','liz']; const uniqueAvailable=ids.reduce((s,id)=>s+people[id].remaining[i],0); const combinedUnassigned=workspaces.W1.weekly[i].unassigned+workspaces.W3.weekly[i].unassigned; return{weekIndex:i,combinedUnassigned,uniqueAvailable,shortfall:Math.max(0,combinedUnassigned-uniqueAvailable)}}).filter(x=>x.shortfall>0);
+    return {people,workspaces,portfolio,sharedPressure};
+  };
+  CP.healthForWorkspace=function(ws,id){
+    if(id==='W1' && (ws.weekly[0].unassigned>=26 || ws.unphasedHours>=8)) return 'Attention';
+    if(id==='W2') return ws.weekly[4].unassigned>ws.weekly[4].available?'Attention':'Watch';
+    if(id==='W3') return ws.weekly[4].unassigned>ws.weekly[4].available?'Attention':'Watch';
+    return 'Healthy';
+  };
+  CP.publish=function(state){
+    state.drafts.forEach(d=>{const i=state.publishedAssignments.findIndex(a=>a.workId===d.workId); if(i>=0)state.publishedAssignments[i]=CP.clone(d); else state.publishedAssignments.push(CP.clone(d));});
+    state.drafts=[]; state.selectedWorkId=null; state.selectedGanttWorkIds=[]; state.selectedCalendarWorkIds=[]; state.personAnchor=null; state.toast='Capacity updated after publish';
+  };
+  CP.phaseItem=function(state,id,schedule){
+    const i=state.unphased.findIndex(x=>x.id===id); if(i<0)return; const item=state.unphased.splice(i,1)[0];
+    state.phasedFromUnphased.push({id:'PH-'+item.id,workspaceId:item.workspaceId,title:item.title,type:item.type,hours:item.hours,weekIndex:schedule.weekIndex,start:schedule.start,end:schedule.end,assignedTo:null,status:'Not Started'});
+    state.toast='Work is now time-phased and included in demand';
+  };
+})();
+
+
+(function(){
+  const CP=window.CP;
+  const fmt=h=>`${h}h`;
+  const badge=s=>{const cls=s==='Action Required'?'attention':s==='Plan Ahead'?'watch':s.toLowerCase();return `<span class="badge ${cls}">${s}</span>`;}
+  function weekHealth(i,d){
+    if(i===0||i===1) return 'Healthy';
+    if(i===2||i===5) return 'Plan Ahead';
+    return d.portfolio[i].total>d.portfolio[i].remaining+d.portfolio[i].committed || i===3 ? 'Action Required':'Action Required';
+  }
+  function outlookStrip(d,state){
+    const portfolioSupply=Object.values(d.people).reduce((sum,p)=>sum+(p.capacity||0),0);
+    return `<div class="outlook-strip">${CP.weeks.map((w,i)=>{const h=weekHealth(i,d);const hc=h==='Action Required'?'attention':h==='Plan Ahead'?'watch':'healthy';return `<button class="outlook-cell ${state.portfolioWeek===i?'selected':''}" data-action="portfolio-week" data-week="${i}"><div class="week-label">${w.label}</div><span class="health-dot ${hc}"></span><strong class="${hc}-text">${h}</strong><div class="outlook-metrics"><span><b>${d.portfolio[i].total}h</b> demand</span><span><b>${portfolioSupply}h</b> supply</span></div></button>`}).join('')}</div>`;
+  }
+  function spark(ws){
+    const max=Math.max(...ws.weekly.map(x=>x.total));
+    return `<div class="spark">${ws.weekly.map((x,i)=>`<div class="spark-col"><div class="spark-bar ${i===3?'risk':''}" style="height:${34+54*x.total/max}px"><span class="spark-unassigned" style="height:${Math.max(4,44*x.unassigned/x.total)}px"></span></div><small>${CP.weeks[i].short}</small></div>`).join('')}</div>`;
+  }
+  CP.renderPortfolio=function(state,d){
+    const wi=state.portfolioWeek==null?0:state.portfolioWeek;
+    const portfolioSupply=Object.values(d.people).reduce((sum,p)=>sum+(p.capacity||0),0);
+    const totalUnassigned=Object.values(d.workspaces).reduce((sum,ws)=>sum+ws.weekly[wi].unassigned,0);
+    const h=weekHealth(wi,d);
+    const summaries=[];
+    Object.values(d.workspaces).forEach(ws=>{
+      const wk=ws.weekly[wi], supply=wk.assigned+wk.available;
+      if(wk.unassigned>0)summaries.push(`<li><strong>${ws.name}:</strong> ${wk.unassigned}h unassigned demand needs assignment${wk.total>supply?`; total demand exceeds this Workspace's ${supply}h supply`:`; current supply can cover its time-phased demand`}.</li>`);
+    });
+    if(wi===3)summaries.unshift(`<li><strong>Shared Capacity Pressure:</strong> Workspace 1 and Workspace 3 have 46h combined unassigned demand competing for 42h unique remaining capacity.</li>`);
+    if(wi===4)summaries.unshift(`<li><strong>Portfolio capacity pressure:</strong> ${d.portfolio[wi].total}h demand is above ${portfolioSupply}h unique portfolio supply.</li>`);
+    return `<div class="page-shell">
+      <header class="page-header"><div><h1 class="capacity-title">Capacity Planning</h1><p>Plan ahead. Find issues early. Make the right moves.</p></div><div class="horizon"><select class="horizon-select"><option selected>Next 6 Weeks</option><option>Next 6 Months</option></select><span>Sep 6 – Oct 17, 2026</span></div></header>
+      <section class="panel portfolio-panel"><div class="section-title"><div><h2 class="section-heading portfolio-heading"><span class="section-symbol">◈</span>Portfolio Outlook</h2><p>Select a week to review demand, supply, and planning priorities.</p></div></div><div class="portfolio-grid"><div>${outlookStrip(d,state)}</div></div></section>
+      <section class="panel attention-panel"><div class="section-title"><div><h2 class="section-heading summary-heading"><span class="section-symbol">✦</span>Planning Summary · ${CP.weeks[wi].label}</h2><p>${h} · ${d.portfolio[wi].total}h demand · ${portfolioSupply}h total supply · ${totalUnassigned}h unassigned</p></div>${totalUnassigned>0?`<button class="btn primary" data-action="summary-assignment" data-week="${wi}">Go to Assignment →</button>`:''}</div><ul class="planning-summary-list">${summaries.join('')}</ul></section>
+      <section class="panel"><div class="section-title workspace-head"><div><h2 class="section-heading workspace-heading"><span class="section-symbol">▦</span>Workspace Overview</h2><p>All workspaces and their 6-week capacity outlook</p></div><div class="toolbar"><input placeholder="Search workspace…"><button class="select-like">Sort by: Priority⌄</button></div></div>
+      <div class="workspace-grid">${Object.values(d.workspaces).map(ws=>{const insight=ws.id==='W1'?'Assignment needs action now':ws.id==='W2'?'Capacity pressure building · Sep 27':'Shared supply pressure · Sep 27';const totalUA=ws.weekly.reduce((sum,w)=>sum+w.unassigned,0);return `<button class="workspace-card" data-action="workspace" data-id="${ws.id}"><div class="card-top"><div><strong>${ws.name}</strong><span>${ws.subtitle}</span></div></div>${spark(ws)}<div class="metric-line"><b>${totalUA}h</b> total unassigned · <b>${ws.unphasedHours}h</b> total unphased</div><div class="insight">${insight}<span>View Workspace →</span></div></button>`}).join('')}</div></section>
+    </div>`;
+  };
+
+  CP.renderWorkspace=function(state,d){
+    const ws=d.workspaces[state.workspaceId]; const h=CP.healthForWorkspace(ws,ws.id); const wi=state.selectedWeek==null?0:state.selectedWeek; const wk=ws.weekly[wi];
+    const totalSupply=(x)=>x.assigned+x.available;
+    const max=Math.max(...ws.weekly.map(x=>Math.max(x.total,totalSupply(x))));
+    return `<div class="page-shell"><header class="workspace-title"><button class="link-btn" data-action="portfolio">← Back to Portfolio</button><div class="crumb">Capacity Planning / ${ws.displayName||ws.subtitle}</div><div class="ws-title-line"><div><h1>${ws.displayName||ws.subtitle}</h1><p>${ws.id==='W1'?'Assignment needs attention now. Unphased work needs scheduling soon.':'Capacity is sufficient now, but pressure builds across the horizon.'}</p></div></div></header>
+      <section class="panel"><div class="section-title"><div><h2>6-Week Planning Outlook</h2><p>Select a week to diagnose demand, assignment and available capacity.</p></div></div>
+        <div class="planning-outlook-layout">
+          <div class="planning-outlook-chart">
+            <div class="planning-chart">${ws.weekly.map((x,i)=>`<button class="week-bar ${wi===i?'selected':''}" data-action="select-week" data-week="${i}"><div class="bar-area"><div class="available-line supply-line" style="bottom:${24+140*totalSupply(x)/max}px"><span>${totalSupply(x)}h supply</span></div><div class="stack assigned" style="height:${140*x.assigned/max}px"></div><div class="stack unassigned" style="height:${140*x.unassigned/max}px"></div></div><strong>${CP.weeks[i].short}</strong><small>${i===4&&x.unassigned>x.available?'Action Required':i>=3?'Plan Ahead':'Healthy'}</small></button>`).join('')}</div>
+            <div class="legend"><span><i class="sq blue"></i>Assigned</span><span><i class="sq orange"></i>Unassigned</span><span><i class="line-key"></i>Total Supply</span></div>
+          </div>
+          <aside class="week-summary">
+            <div class="week-summary-head"><span>${CP.weeks[wi].label}</span>${badge(wk.total>totalSupply(wk)?'Action Required':wi>=3?'Plan Ahead':'Healthy')}</div>
+            <div><strong class="week-demand">${wk.total}h</strong><span class="week-demand-label">Time-Phased Demand</span></div>
+            <div class="week-summary-metrics">
+              <div><b>${wk.assigned}h</b><span>Assigned</span></div>
+              <div><b>${wk.unassigned}h</b><span>Unassigned</span></div>
+              <div><b>${totalSupply(wk)}h</b><span>Total Supply This Week</span></div>
+            </div>
+            <p>${wk.total>totalSupply(wk)?`${wk.total-totalSupply(wk)}h of total demand exceeds this Workspace's total supply this week.`:`${wk.total}h total demand is within ${totalSupply(wk)}h total supply this week. ${wk.assigned}h is already assigned and ${wk.available}h remains uncommitted. Some uncommitted supply may be shared with other Workspaces.`}</p>
+          </aside>
+        </div>
+      </section>
+      <section class="risk-grid"><div class="panel risk-card"><div class="section-title"><h2>Assignment</h2>${wk.total>totalSupply(wk)?badge('Action Required'):badge(wi>=3?'Plan Ahead':'Healthy')}</div><strong>${wk.unassigned}h Unassigned</strong><p>${totalSupply(wk)}h total supply this week · ${wk.assigned}h already assigned · ${wk.available}h currently uncommitted.</p><button class="btn primary" data-action="review-unassigned">Review Unassigned →</button></div>
+        <div class="panel risk-card"><div class="section-title"><h2>Unphased</h2>${badge(ws.unphasedHours>0?'Plan Ahead':'Healthy')}</div><strong>${ws.unphasedHours}h · ${ws.unphasedItems.length} Work/Tasks</strong><p>${ws.unphasedItems.filter(x=>x.urgency.includes('1–2')).reduce((s,x)=>s+x.hours,0)}h due in 1–2 weeks.</p><button class="btn primary" data-action="review-unphased">Review Unphased →</button></div></section>
+      <section class="panel"><div class="section-title"><div><h2>Supply</h2><p><b>${wk.available}h Total Supply</b> · Remaining capacity after existing commitments; some may be shared with other Workspaces.</p></div></div><div class="supply-table">${ws.members.map(p=>`<div class="supply-row"><div><strong>${p.name}</strong>${p.memberships.length>1?'<span class="shared-chip">Shared</span>':''}</div><span>${p.remaining[wi]}h remaining</span><button class="link-btn" data-action="find-work" data-person="${p.id}">Find Work/Task</button></div>`).join('')}</div></section>
+    </div>`;
+  };
+})();
+
+
+(function(){
+  const CP=window.CP;
+  CP.renderUnphased=function(state,d){ const ws=d.workspaces[state.workspaceId];
+    return `<div class="page-shell"><header class="workspace-title"><button class="link-btn" data-action="workspace" data-id="${ws.id}">← Back to ${ws.displayName||ws.subtitle}</button><div class="crumb">Capacity Planning / ${ws.displayName||ws.subtitle} / Unphased Work</div><div class="ws-title-line"><div><h1>Unphased Work</h1><p>Set enough scheduling information to move work into time-phased demand.</p></div><span class="badge watch">${ws.unphasedHours}h total</span></div></header>
+    <section class="panel"><div class="unphased-table"><div class="table-head"><span>Work / Task</span><span>Hours</span><span>Due Date</span><span>Urgency</span><span></span></div>${ws.unphasedItems.map(x=>`<div class="table-row"><span><strong>${x.title}</strong><small>${x.type}</small></span><span>${x.hours}h</span><span>${x.due}</span><span>${x.urgency}</span><button class="btn" data-action="set-schedule" data-id="${x.id}">Set Schedule</button></div>`).join('')}</div></section>
+    ${state.sidePanel?CP.renderWorkPanel(state,state.sidePanel):''}</div>`;
+  };
+  CP.renderWorkPanel=function(state,id){ const x=state.unphased.find(i=>i.id===id); if(!x)return''; return `<div class="overlay" data-action="close-panel"></div><aside class="side-panel"><div class="side-head"><div><small>${x.type}</small><h2>${x.title}</h2></div><button class="icon-btn" data-action="close-panel">×</button></div><label>Planned Hours<input value="${x.hours}" disabled></label><label>Due Date<input value="${x.due}" disabled></label><label>Schedule Week<select id="scheduleWeek">${CP.weeks.map((w,i)=>`<option value="${i}">${w.label}</option>`).join('')}</select></label><div class="two-col"><label>Start<input id="scheduleStart" type="date" value="2026-09-09"></label><label>End<input id="scheduleEnd" type="date" value="2026-09-10"></label></div><div class="panel-note">Saving a schedule makes this work time-phased. Assignment remains a separate step.</div><div class="side-actions"><button class="btn" data-action="close-panel">Cancel</button><button class="btn primary" data-action="save-schedule" data-id="${x.id}">Save Schedule</button></div></aside>`;};
+})();
+
+
+(function(){
+  const CP=window.CP;
+  function allWork(state){return [...state.work,...state.phasedFromUnphased];}
+  function assignmentDisplayCount(workspaceId){return ({W1:34,W2:27,W3:31})[workspaceId]||24;}
+  function assignmentFor(state,id){const d=state.drafts.find(x=>x.workId===id); if(d)return d; return state.publishedAssignments.find(x=>x.workId===id)||null;}
+  function effectiveStatus(w){
+    const today=new Date('2026-09-03T00:00:00');
+    const start=new Date(w.start+'T00:00:00');
+    const end=new Date(w.end+'T00:00:00');
+    if(w.status==='Completed') return 'Completed';
+    if(w.status==='Overdue') return 'Overdue';
+    if(w.status==='In Progress') return 'In Progress';
+    if(w.status==='Not Started' && end<today) return 'Overdue';
+    if(w.status==='Not Started' && start<today && end>=today) return 'At Risk';
+    return 'Not Started';
+  }
+  function statusClass(w){const st=effectiveStatus(w);return st==='Overdue'?'overdue':st==='In Progress'?'inprogress':st==='Completed'?'completed':st==='At Risk'?'atrisk':'notstarted';}
+  function draftFill(w){const st=effectiveStatus(w);return st==='Overdue'?'draft-overdue':st==='In Progress'?'draft-progress':st==='At Risk'?'draft-atrisk':'draft-neutral';}
+
+  function renderCalendarAssignment(state,d,workspaceId,all,currentAssignment,people,existing,types){
+    const activePeopleIds=state.selectedCalendarAssigneeIds.includes('__none__')
+      ? []
+      : (state.selectedCalendarAssigneeIds.length?state.selectedCalendarAssigneeIds:people.map(p=>p.id));
+
+    const calendarList=all.filter(w=>{
+      const assigned=!!currentAssignment(w);
+      if(assigned)return false;
+      if(state.objectFilter!=='All'&&w.type!==state.objectFilter)return false;
+      if(state.workTypeFilter!=='All types'&&w.workType!==state.workTypeFilter)return false;
+      const q=(state.searchTerm||'').trim().toLowerCase();
+      return !q||w.title.toLowerCase().includes(q)||(w.workType||'').toLowerCase().includes(q);
+    });
+
+    const selectedWorks=all.filter(w=>state.selectedCalendarWorkIds.includes(w.id));
+
+    const baseWeekStart=new Date('2026-08-31T00:00:00');
+    const dayStart=new Date(baseWeekStart.getTime()+(state.calendarWeekOffset||0)*7*86400000);
+    const dayEnd=new Date(dayStart.getTime()+6*86400000);
+    const today=new Date('2026-09-03T00:00:00');
+
+    const fmt=(dt,withYear=false)=>dt.toLocaleDateString('en-US',{month:'short',day:'numeric',...(withYear?{year:'numeric'}:{})});
+    const weekLabel=`${fmt(dayStart)}–${fmt(dayEnd,true)}`;
+    const containsToday=today>=dayStart&&today<=dayEnd;
+    const todayIndex=containsToday?Math.round((today-dayStart)/86400000):-1;
+
+    const dayPct=(date)=>Math.max(0,Math.min(100,((new Date(date+'T00:00:00')-dayStart)/(86400000*7))*100));
+    const dayWidth=(a,b)=>Math.max(7,dayPct(b)-dayPct(a)+100/7);
+    const overlap=(a,b)=>!(new Date(a.end+'T00:00:00')<new Date(b.start+'T00:00:00')||new Date(a.start+'T00:00:00')>new Date(b.end+'T00:00:00'));
+    const intersectsWeek=(item)=>!(new Date(item.end+'T00:00:00')<dayStart||new Date(item.start+'T00:00:00')>dayEnd);
+    const weekDays=Array.from({length:7},(_,i)=>new Date(dayStart.getTime()+i*86400000));
+
+    function layoutPerson(p){
+      const items=[];
+
+      // Published existing work in the current week.
+      existing.filter(x=>x.personId===p.id&&intersectsWeek(x)).forEach(x=>{
+        const selectedRelated=selectedWorks.some(w=>w.id===x.workId);
+        const pendingDraft=state.drafts.some(d=>d.workId===x.workId);
+        items.push({...x,_kind:'published',_related:selectedRelated||pendingDraft});
+      });
+
+      // Proposed placements for selected Work/Tasks.
+      selectedWorks.forEach(w=>{
+        const cur=currentAssignment(w);
+        const isDraft=state.drafts.some(d=>d.workId===w.id);
+        if(intersectsWeek(w)&&cur!==p.id&&!isDraft){
+          items.push({...w,_kind:'proposed'});
+        }
+      });
+
+      // Current assignee emphasis for selected Assigned Work.
+      selectedWorks.forEach(w=>{
+        const cur=currentAssignment(w);
+        if(cur===p.id&&intersectsWeek(w)){
+          const base=existing.find(x=>x.workId===w.id&&x.personId===p.id);
+          if(base){
+            const idx=items.findIndex(x=>x._kind==='published'&&x.workId===w.id);
+            if(idx>=0)items[idx]._currentSelected=true;
+          }
+        }
+      });
+
+      // Draft assignments / reassignments.
+      state.drafts.filter(d=>d.toPersonId===p.id).forEach(d=>{
+        const w=all.find(x=>x.id===d.workId)||existing.find(x=>x.workId===d.workId);
+        if(w&&intersectsWeek(w))items.push({...w,id:d.workId,_kind:'draft'});
+      });
+
+      // Source of a reassignment stays visible until Publish.
+      state.drafts.filter(d=>d.fromPersonId===p.id&&d.toPersonId!==p.id).forEach(d=>{
+        const w=all.find(x=>x.id===d.workId)||existing.find(x=>x.workId===d.workId);
+        if(w&&intersectsWeek(w)){
+          const base=existing.find(x=>x.workId===w.id&&x.personId===p.id);
+          if(base){
+            const idx=items.findIndex(x=>x._kind==='published'&&x.workId===w.id);
+            if(idx>=0)items[idx]._pendingMove=true;
+          }
+        }
+      });
+
+      const laneEnds=[];
+      const placed=items.slice().sort((a,b)=>new Date(a.start)-new Date(b.start)).map(item=>{
+        let lane=0;
+        while(laneEnds[lane]&&overlap(laneEnds[lane],item))lane++;
+        laneEnds[lane]=item;
+        return {...item,_lane:lane};
+      });
+      return {placed,lanes:Math.max(1,laneEnds.length)};
+    }
+
+    const workspaceOptions=Object.keys(CP.workspaceSeeds)
+      .filter(id=>!state.personAnchor||(d.people[state.personAnchor]&&d.people[state.personAnchor].memberships.includes(id)))
+      .map(id=>`<option value="${id}" ${id===workspaceId?'selected':''}>${CP.workspaceSeeds[id].displayName}</option>`).join('');
+
+    const personName=(id)=>((CP.schedulePeopleSeed[workspaceId]||[]).find(p=>p.id===id)||d.people[id]||{name:id}).name;
+
+    return `<div class="calendar-assignment-shell">
+      <aside class="calendar-sidebar">
+        <div class="calendar-filters">
+          <span class="filter-label">Workspace</span>
+          <select id="workspaceSelect" class="filter-select workspace-select">${workspaceOptions}</select>
+
+          <span class="filter-label">Work Type</span>
+          <select id="workTypeSelect" class="filter-select">${types.map(t=>`<option ${t===state.workTypeFilter?'selected':''}>${t}</option>`).join('')}</select>
+
+          <div class="object-tabs">
+            <button class="${state.objectFilter==='All'?'active':''}" data-action="object-filter" data-object="All">All</button>
+            <button class="${state.objectFilter==='Work'?'active':''}" data-action="object-filter" data-object="Work">Work</button>
+            <button class="${state.objectFilter==='Task'?'active':''}" data-action="object-filter" data-object="Task">Task</button>
+          </div><div class="search-wrap"><input id="workSearch" value="${state.searchTerm||''}" placeholder="Search work..."></div>
+          <div class="work-count assignment-inline-note"><b>${assignmentDisplayCount(workspaceId)} Work/Task records need to be assigned.</b><span>Only time-phased work appears here. Unphased work appears after a schedule is defined.</span></div>
+        </div>
+
+        
+
+        <div class="calendar-work-list">
+          ${calendarList.length?calendarList.map(w=>{
+            const selected=state.selectedCalendarWorkIds.includes(w.id);
+            const draft=state.drafts.find(d=>d.workId===w.id);
+            const cur=currentAssignment(w);
+            const selIndex=selected?state.selectedCalendarWorkIds.indexOf(w.id)+1:null;
+            return `<button class="calendar-work-card ${selected?'selected':''} ${draft?'drafted':''}" data-action="calendar-work-select" data-id="${w.id}" draggable="${draft?'false':'true'}" data-calendar-drag-work="${w.id}" ${draft?'disabled':''}>
+              ${selected?`<span class="selection-index">${selIndex}</span>`:''}
+              <div>
+                <small>${w.type} · ${w.workType||'General'}</small>
+                <strong>${w.title}</strong>
+                <span>${w.hours}h · ${effectiveStatus(w)}</span>
+              </div>
+              ${draft?`<em>${draft.fromPersonId?`${personName(draft.fromPersonId)} → `:''}${personName(draft.toPersonId)}</em>`:cur?`<em>${personName(cur)}</em>`:''}
+            </button>`;
+          }).join(''):'<div class="empty">No work matches the current filters.</div>'}
+        </div>
+      </aside>
+
+      <section class="weekly-calendar">
+        <div class="weekly-calendar-head">
+          <div><strong>Weekly Calendar</strong><span>By Assignee</span></div>
+          <div class="weekly-calendar-actions">
+            <div class="calendar-week-nav">
+              <button class="btn icon" data-action="calendar-prev-week" title="Previous week">‹</button>
+              <span class="calendar-nav-date">${weekLabel}</span>
+              <button class="btn" data-action="calendar-today">Today</button>
+              <button class="btn icon" data-action="calendar-next-week" title="Next week">›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-week-header">
+          <div class="resource-head">
+            <details class="calendar-assignee-selector left-selector">
+              <summary><span>Assignee</span><small>${activePeopleIds.length} of ${people.length} selected ▾</small></summary>
+              <div class="calendar-assignee-menu">
+                <div class="calendar-assignee-menu-head"><b>Show assignees</b><div class="calendar-assignee-actions"><button data-action="calendar-assignee-all">All</button><span>·</span><button data-action="calendar-assignee-clear">Clear All</button></div></div>
+                ${people.map(p=>`<label class="calendar-assignee-option">
+                  <input type="checkbox" data-action="calendar-assignee-menu-select" data-id="${p.id}" ${activePeopleIds.includes(p.id)?'checked':''}>
+                  <span><b>${p.name}</b><small>${p.remaining}h remaining</small></span>
+                </label>`).join('')}
+              </div>
+            </details>
+          </div>
+          ${weekDays.map((dt,i)=>`<div class="${i===todayIndex?'today-col':''}">${dt.toLocaleDateString('en-US',{weekday:'short'})} ${dt.getDate()}</div>`).join('')}
+        </div>
+
+        <div class="calendar-resource-list">
+          ${activePeopleIds.length?people.filter(p=>activePeopleIds.includes(p.id)).map(p=>{
+            const layout=layoutPerson(p);
+            const rowHeight=Math.max(58,18+layout.lanes*30);
+            const selectedAssignedWorks=selectedWorks.filter(w=>currentAssignment(w)===p.id);
+            const isCurrentAssignee=selectedAssignedWorks.length>0;
+            return `<div class="calendar-resource-row ${state.personAnchor===p.id?'calendar-resource-anchor':''} ${isCurrentAssignee?'calendar-current-assignee':''}" style="height:${rowHeight}px">
+              <div class="calendar-resource-name">
+                <div><b>${p.name}</b><span>${p.remaining}h remaining</span></div>
+              </div>
+              <div class="calendar-resource-grid" data-calendar-drop-person="${p.id}" style="height:${rowHeight}px">
+                ${containsToday?`<div class="calendar-today-column" style="left:${todayIndex*14.2857}%"></div>`:''}
+                ${layout.placed.map(item=>{
+                  const top=8+item._lane*30;
+                  if(item._kind==='published'){
+                    const est=effectiveStatus(item);
+                    const cls=est==='Overdue'?'overdue':est==='In Progress'?'inprogress':est==='Completed'?'completed':est==='At Risk'?'atrisk':'notstarted';
+                    const editing=selectedWorks.length>0||state.drafts.length>0;
+                    const dim=editing&&!item._related&&!item._currentSelected&&!item._pendingMove?'deemphasized':'';
+                    return `<div class="calendar-work-bar ${cls} ${dim} ${item._currentSelected?'current-selected':''} ${item._pendingMove?'reassign-source':''}" draggable="${item._pendingMove?'false':'true'}" data-reassign-work="${item.workId||''}" data-reassign-from="${p.id}" style="left:${dayPct(item.start)}%;width:${dayWidth(item.start,item.end)}%;top:${top}px" title="${item.title} · ${est}${item._pendingMove?' · Draft reassignment pending':''}">${item.title}${item._pendingMove?'<span class="pending-source-label">Pending move</span>':''}</div>`;
+                  }
+                  if(item._kind==='proposed'){
+                    const idx=state.selectedCalendarWorkIds.indexOf(item.id)+1;
+                    return `<button class="calendar-proposed-bar" style="left:${dayPct(item.start)}%;width:${dayWidth(item.start,item.end)}%;top:${top}px" data-action="calendar-draft-here" data-person="${p.id}" data-work="${item.id}"><span class="calendar-proposed-index">${idx}</span>Proposed · ${item.title}</button>`;
+                  }
+                  const est=effectiveStatus(item);
+                  const cls=est==='Overdue'?'overdue':est==='In Progress'?'inprogress':est==='At Risk'?'atrisk':'notstarted';
+                  return `<div class="calendar-draft-bar ${cls}" style="left:${dayPct(item.start)}%;width:${dayWidth(item.start,item.end)}%;top:${top}px"><span>${item.title}</span><button data-action="cancel-draft" data-id="${item.id||''}">×</button></div>`;
+                }).join('')}
+              </div>
+            </div>`;
+          }).join(''):'<div class="calendar-empty-assignees">No assignees selected. Use the Assignee menu to add people.</div>'}
+        </div>
+      </section>
+    </div>`;
+  }
+
+  CP.renderSchedule=function(state,d){
+    const workspaceId=state.workspaceId||'W1'; const ws=d.workspaces[workspaceId]; const wi=state.selectedWeek==null?0:state.selectedWeek;
+    const allowedPerson=state.personAnchor?d.people[state.personAnchor]:null;
+    const allowedWorkspaces=allowedPerson?allowedPerson.memberships:[workspaceId];
+    const all=allWork(state).filter(w=>w.workspaceId===workspaceId);
+    const currentAssignment=(w)=>{const pub=state.publishedAssignments.find(a=>a.workId===w.id);return pub?pub.toPersonId:w.assignedTo;};
+    const filtered=all.filter(w=>{
+      const assigned=!!currentAssignment(w);
+      if(assigned) return false;
+      if(state.objectFilter!=='All' && w.type!==state.objectFilter) return false;
+      if(state.workTypeFilter!=='All types' && w.workType!==state.workTypeFilter) return false;
+      const q=(state.searchTerm||'').trim().toLowerCase();
+      return !q || w.title.toLowerCase().includes(q) || (w.workType||'').toLowerCase().includes(q);
+    });
+    const draftIds=new Set(state.drafts.map(x=>x.workId));
+    const list=filtered.concat(all.filter(w=>draftIds.has(w.id) && !filtered.includes(w)));
+    const people=(CP.schedulePeopleSeed[workspaceId]||[]).map(p=>({...p}));
+    const selectedIds=state.selectedGanttWorkIds||[]; const selectedWorks=allWork(state).filter(w=>selectedIds.includes(w.id)); const selected=selectedWorks[selectedWorks.length-1]||null;
+    const baseExisting=(CP.existingScheduleSeed[workspaceId]||[]).map((x,idx)=>({...x,workId:x.workId||`SCH-${workspaceId}-${idx}`}));
+    const allScheduleWork=allWork(state).filter(w=>w.workspaceId===workspaceId);
+    const workForId=(id)=>allScheduleWork.find(w=>w.id===id)||baseExisting.find(x=>x.workId===id)||null;
+    const publishedByWork=new Map(state.publishedAssignments.map(a=>[a.workId,a]));
+    const existingBaseIds=new Set(baseExisting.filter(x=>x.workId).map(x=>x.workId));
+    const existing=baseExisting.map(x=>{
+      if(!x.workId)return {...x};
+      const pub=publishedByWork.get(x.workId);
+      if(!pub)return {...x};
+      return {...x,personId:pub.toPersonId};
+    });
+    state.publishedAssignments.forEach(pub=>{
+      if(existingBaseIds.has(pub.workId))return;
+      const w=allScheduleWork.find(x=>x.id===pub.workId);
+      if(!w)return;
+      existing.push({personId:pub.toPersonId,workId:w.id,title:w.title,start:w.start,end:w.end,status:w.status});
+    });
+    const types=['All types',...Array.from(new Set(all.map(w=>w.workType).filter(Boolean)))];
+    const rangeStart=new Date('2026-08-20T00:00:00'); const rangeEnd=new Date('2026-09-17T00:00:00'); const totalDays=28;
+    const pct=(date)=>{const dt=new Date(date+'T00:00:00'); return Math.max(0,Math.min(100,((dt-rangeStart)/(86400000*totalDays))*100));};
+    const widthPct=(a,b)=>Math.max(2,pct(b)-pct(a)+100/29);
+    const dateLabels=[]; for(let i=0;i<29;i++){const dt=new Date(rangeStart.getTime()+i*86400000); const mon=dt.toLocaleString('en-US',{month:'short'}); const day=dt.getDate(); dateLabels.push(`<span class="${i===14?'today-head':''}">${i===14?'Today · ':''}${mon} ${day}</span>`)}
+    const workspaceOptions=Object.keys(CP.workspaceSeeds).filter(id=>allowedWorkspaces.includes(id)||!state.personAnchor).map(id=>`<option value="${id}" ${id===workspaceId?'selected':''}>${CP.workspaceSeeds[id].displayName}</option>`).join('');
+    const intervalsOverlap=(a,b)=>!(new Date(a.end+'T00:00:00')<new Date(b.start+'T00:00:00') || new Date(a.start+'T00:00:00')>new Date(b.end+'T00:00:00'));
+    const laneLayout=(items)=>{
+      const lanes=[];
+      return items.slice().sort((a,b)=>new Date(a.start)-new Date(b.start)).map(item=>{
+        let lane=0;
+        while(lanes[lane] && intervalsOverlap(lanes[lane],item)) lane++;
+        lanes[lane]=item;
+        return {...item,_lane:lane};
+      });
+    };
+    const publishedForPerson=(p)=>laneLayout(existing.filter(x=>x.personId===p.id));
+    const renderBars=(p)=>publishedForPerson(p).map(x=>{
+      const est=effectiveStatus(x); const cls=est==='Overdue'?'overdue':est==='In Progress'?'inprogress':est==='Completed'?'completed':est==='At Risk'?'atrisk':'notstarted';
+      const currentSelected=selectedIds.includes(x.workId);
+      const sourceDraft=state.drafts.find(draft=>draft.workId===x.workId && draft.fromPersonId===p.id && draft.toPersonId!==p.id);
+      const dim=(selected||state.drafts.length)&&!currentSelected&&!sourceDraft?'deemphasized':'';
+      const top=9+(x._lane*31);
+      return `<div class="published-bar ${cls} ${dim} ${currentSelected?'current-selected':''} ${sourceDraft?'reassign-source':''}" draggable="${sourceDraft?'false':'true'}" data-reassign-work="${x.workId||''}" data-reassign-from="${p.id}" style="left:${pct(x.start)}%;width:${widthPct(x.start,x.end)}%;top:${top}px" title="${x.title} · ${est}${sourceDraft?' · Draft reassignment pending':''}">${x.title}${sourceDraft?'<span class="pending-source-label">Pending move</span>':''}</div>`;
+    }).join('');
+    const rowLaneCount=(p)=>{
+      const published=publishedForPerson(p);
+      let maxLane=published.reduce((m,x)=>Math.max(m,x._lane),0);
+      const extraBars=[];
+      selectedWorks.filter(w=>!draftIds.has(w.id)&&currentAssignment(w)!==p.id).forEach(w=>extraBars.push(w));
+      state.drafts.filter(x=>x.toPersonId===p.id).forEach(draft=>{const w=allWork(state).find(x=>x.id===draft.workId); if(w) extraBars.push(w);});
+      extraBars.forEach(w=>{
+        let lane=0;
+        while(published.some(x=>x._lane===lane && intervalsOverlap(x,w))) lane++;
+        maxLane=Math.max(maxLane,lane);
+      });
+      return maxLane+1;
+    };
+    const nextOpenLane=(p,w)=>{
+      const published=publishedForPerson(p);
+      let lane=0;
+      while(published.some(x=>x._lane===lane && intervalsOverlap(x,w))) lane++;
+      return lane;
+    };
+    const personName=(id)=>((CP.schedulePeopleSeed[workspaceId]||[]).find(p=>p.id===id)||d.people[id]||{name:id}).name;
+    const hasConflict=(personId,w)=>existing.some(x=>x.personId===personId && !(new Date(x.end+'T00:00:00')<new Date(w.start+'T00:00:00') || new Date(x.start+'T00:00:00')>new Date(w.end+'T00:00:00')));
+    return `<div class="schedule-shell ${state.drafts.length?'draft-session':''} ${(selected||state.drafts.length)?'editing-session':''} ${state.personAnchor?'anchor-session':''}"><header class="schedule-header"><div><button class="link-btn" data-action="workspace" data-id="${workspaceId}">← Capacity Planning</button><h1>Schedule</h1></div><div class="schedule-actions">${state.drafts.length?`<span class="draft-count">${state.drafts.length} Draft Change${state.drafts.length>1?'s':''}</span><button class="btn" data-action="cancel-all">Cancel Drafts</button><button class="btn primary" data-action="publish">Publish ${state.drafts.length}</button>`:''}</div></header>
+      <div class="schedule-toolbar"><div class="segmented"><button class="active">Assignment</button><button>My Availability</button></div><div class="assignment-view-tabs"><button class="${state.assignmentView==='timeline'?'active':''}" data-action="assignment-view" data-view="timeline">Gantt</button><button class="${state.assignmentView==='calendar'?'active':''}" data-action="assignment-view" data-view="calendar">Calendar</button></div>${state.personAnchor?`<div class="anchor-chip"><b>${allowedPerson.name}</b> highlighted · You can still assign work to any assignee shown</div>`:''}<div class="timeline-legend"><span><i class="legend-dot red"></i>Overdue</span><span><i class="legend-dot blue"></i>In Progress</span><span><i class="legend-dot yellow"></i>At Risk</span><span><i class="legend-dot gray"></i>New / Not Started</span></div></div>
+      <div class="schedule-main ${state.assignmentView==='timeline'?'':'view-hidden'}"><aside class="work-list"><div class="schedule-filters"><span class="filter-label">Workspace</span><select id="workspaceSelect" class="filter-select workspace-select">${workspaceOptions}</select><span class="filter-label">Work Type</span><select id="workTypeSelect" class="filter-select">${types.map(t=>`<option ${t===state.workTypeFilter?'selected':''}>${t}</option>`).join('')}</select><div class="object-tabs"><button class="${state.objectFilter==='All'?'active':''}" data-action="object-filter" data-object="All">All</button><button class="${state.objectFilter==='Work'?'active':''}" data-action="object-filter" data-object="Work">Work</button><button class="${state.objectFilter==='Task'?'active':''}" data-action="object-filter" data-object="Task">Task</button></div><div class="search-wrap"><input id="workSearch" value="${state.searchTerm||''}" placeholder="Search work..."></div><div class="work-count assignment-inline-note"><b>${assignmentDisplayCount(workspaceId)} Work/Task records need to be assigned.</b><span>Only time-phased work appears here. Unphased work appears after a schedule is defined.</span></div></div>
+        <div class="work-items">${list.length?list.map(w=>{const dr=state.drafts.find(x=>x.workId===w.id);const cur=currentAssignment(w);const disabled=!!dr;return `<button class="work-item ${selectedIds.includes(w.id)?'selected':''} ${disabled?'drafted':''}" data-action="select-work" data-id="${w.id}" ${disabled?'disabled':''} draggable="${!disabled}">${selectedIds.includes(w.id)?`<span class="selection-index">${selectedIds.indexOf(w.id)+1}</span>`:'' }<div><small>${w.type} · ${w.workType||'General'}</small><strong>${w.title}</strong><span>${w.hours}h · ${w.status}</span></div>${dr?`<em>Draft → ${((CP.schedulePeopleSeed[workspaceId]||[]).find(p=>p.id===dr.toPersonId)||d.people[dr.toPersonId]||{name:dr.toPersonId}).name}</em>`:cur?`<em>${((CP.schedulePeopleSeed[workspaceId]||[]).find(p=>p.id===cur)||d.people[cur]||{name:cur}).name}</em>`:''}</button>`}).join(''):'<div class="empty">No work matches the current filters.</div>'}</div></aside>
+        <section class="gantt"><div class="gantt-head"><div class="assignee-col"><strong>Assignee</strong><span>${CP.workspaceSeeds[workspaceId].displayName}</span></div><div class="timeline-head">${dateLabels.join('')}<div class="today-marker head"><b>Today</b></div></div></div>
+          ${people.map(p=>{const isAnchor=state.personAnchor===p.id;const drafts=state.drafts.filter(x=>x.toPersonId===p.id);const isCurrentAssignee=selectedWorks.some(w=>currentAssignment(w)===p.id);const proposedWorks=selectedWorks.filter(w=>!draftIds.has(w.id)&&currentAssignment(w)!==p.id);const lanes=rowLaneCount(p);const rowHeight=Math.max(70,18+(lanes+Math.max(0,proposedWorks.length-1))*31);return `<div class="gantt-row ${isAnchor?'anchor':''} ${isCurrentAssignee?'current-assignee-row':''}" data-person="${p.id}" style="height:${rowHeight}px"><div class="assignee-col"><strong>${p.name}</strong></div><div class="timeline-row" data-drop-person="${p.id}" style="height:${rowHeight}px"><div class="today-marker"></div>${renderBars(p)}${proposedWorks.map((w,idx)=>`<button class="proposed-bar" style="left:${pct(w.start)}%;width:${widthPct(w.start,w.end)}%;top:${9+(nextOpenLane(p,w)+idx)*31}px" data-action="draft-here" data-person="${p.id}" data-work="${w.id}"><span class="calendar-proposed-index">${selectedIds.indexOf(w.id)+1}</span>Proposed · ${w.title}</button>`).join('')}${drafts.map(draft=>{const w=workForId(draft.workId);const conflict=w?hasConflict(p.id,w):false;const lane=nextOpenLane(p,w);return w?`<div class="draft-bar ${draftFill(w)} ${conflict?'conflict':''}" style="left:${pct(w.start)}%;width:${widthPct(w.start,w.end)}%;top:${9+lane*31}px" title="${w.title} · Draft${conflict?' · Conflict':''}"><span>${w.title}</span>${conflict?'<span class="conflict-label">Conflict</span>':''}<button data-action="cancel-draft" data-id="${draft.workId}" title="Cancel draft">×</button></div>`:''}).join('')}</div></div>`}).join('')}
+        </section></div>
+      ${state.assignmentView==='calendar'?renderCalendarAssignment(state,d,workspaceId,all,currentAssignment,people,existing,types):''}
+      ${selectedWorks.length?`<div class="selection-footer"><div><strong>${selectedWorks.length} Work/Task${selectedWorks.length>1?'s':''} selected</strong><span>${selectedWorks.map((w,i)=>`${i+1}. ${w.title}`).join(' · ')}</span></div><span>Click a selected item again to deselect it. Drag a Work/Task to an assignee, or click its numbered Proposed Placement.</span></div>`:''}
+    </div>`;
+  };
+})();
+
+
+
+(function(){
+  const CP=window.CP;
+  CP.renderConfiguration=function(state){
+    const cfg=state.config;
+    const statuses=['New','In Progress','Review','Completed'];
+    const roleOptions=['Engineering Designer','Project Engineer','Reviewer','Field Engineer','Permit Coordinator','Project Manager','QA Reviewer'];
+
+    return `<div class="type-config-page">
+      <header class="type-config-header">
+        <div>
+          <h1>[LMAO] Job Type 1</h1>
+          <p>This job type's description should show on hover</p>
+        </div>
+        <div class="type-config-actions">
+          <button class="btn primary large">Publish Changes</button>
+          <button class="icon-btn large">⋮</button>
+          <div class="publish-meta">
+            <span>Last Published: Sep 08, 2026 at 10:58 AM</span>
+            <span>Last Edited: Sep 08, 2026 at 10:36 AM</span>
+          </div>
+        </div>
+      </header>
+
+      <nav class="type-tabs">
+        <button>General</button>
+        <button>Page Layout</button>
+        <button>Task Templates</button>
+        <button>Table Templates</button>
+        <button>Statuses</button>
+        <button>Mobile</button>
+        <button>Related Work</button>
+        <button>Schedule</button>
+        <button class="active">Capacity Planning</button>
+      </nav>
+
+      <main class="type-config-main">
+        <section class="config-card">
+          <div class="config-card-header">
+            <strong>Capacity Planning</strong>
+            <span>⌃</span>
+          </div>
+
+          <div class="config-card-body">
+            <div class="config-master-row">
+              <div>
+                <label class="field-label">Capacity Planning</label>
+                <p>Include this Job Type in Capacity Planning calculations.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-action="config-capacity-toggle" ${cfg.capacityPlanningEnabled?'checked':''}>
+                <span></span>
+              </label>
+            </div>
+
+            <div class="config-body-content ${cfg.capacityPlanningEnabled?'':'disabled'}">
+              <div class="setting-block">
+                <div class="setting-heading">
+                  <div>
+                    <h3>Planned Working Hours</h3>
+                    <p>Define how many working hours this Job Type contributes to Capacity Planning.</p>
+                  </div>
+                </div>
+
+                <div class="mode-options">
+                  <label class="mode-option ${cfg.pwhMode==='whole'?'selected':''}">
+                    <input type="radio" name="pwhMode" value="whole" ${cfg.pwhMode==='whole'?'checked':''}>
+                    <div>
+                      <strong>By Whole Work / Task</strong>
+                      <span>Use one Planned Working Hours value for the entire Work / Task.</span>
+                    </div>
+                  </label>
+                  <label class="mode-option ${cfg.pwhMode==='status'?'selected':''}">
+                    <input type="radio" name="pwhMode" value="status" ${cfg.pwhMode==='status'?'checked':''}>
+                    <div>
+                      <strong>By Status</strong>
+                      <span>Set Planned Working Hours separately for each Status.</span>
+                    </div>
+                  </label>
+                </div>
+
+                ${cfg.pwhMode==='whole'?`
+                  <div class="whole-hours-row">
+                    <label>Planned Working Hours</label>
+                    <div class="hours-input-wrap">
+                      <input id="wholeHoursInput" type="number" min="0" step="0.5" value="${cfg.wholeHours}">
+                      <span>hours</span>
+                    </div>
+                  </div>
+                `:`
+                  <div class="status-config-table">
+                    <div class="status-config-head">
+                      <span>Status</span>
+                      <span>Planned Working Hours</span>
+                      <span>Required Role</span>
+                      <span>Role Selection</span>
+                    </div>
+                    ${statuses.map(st=>{
+                      const sr=cfg.statusRoles[st];
+                      return `<div class="status-config-row">
+                        <span class="status-name">${st}</span>
+                        <div class="hours-input-wrap compact">
+                          <input type="number" min="0" step="0.5" value="${sr.hours}" data-status-hours="${st}">
+                          <span>h</span>
+                        </div>
+                        <select class="role-mode-select" data-action="status-role-mode" data-status="${st}">
+                          <option value="any" ${sr.mode==='any'?'selected':''}>Any permitted role in Workspace</option>
+                          <option value="specific" ${sr.mode==='specific'?'selected':''}>Specific required role</option>
+                        </select>
+                        <div class="role-multi ${sr.mode==='specific'?'':'disabled'}">
+                          <details>
+                            <summary>${sr.roles.length?sr.roles.join(', '):'Select roles...'}</summary>
+                            <div class="role-menu">
+                              ${roleOptions.map(role=>`<label><input type="checkbox" data-action="status-role-option" data-status="${st}" data-role="${role}" ${sr.roles.includes(role)?'checked':''}>${role}</label>`).join('')}
+                            </div>
+                          </details>
+                        </div>
+                      </div>`;
+                    }).join('')}
+                  </div>
+                `}
+              </div>
+
+              <div class="setting-block">
+                <div class="setting-heading">
+                  <div>
+                    <h3>Schedule Requirement</h3>
+                    <p>Define how this Job Type becomes time-phased for Capacity Planning and which field supplies the planning date.</p>
+                  </div>
+                </div>
+
+                <div class="mode-options">
+                  <label class="mode-option ${cfg.scheduleRequirement==='specific'?'selected':''}">
+                    <input type="radio" name="scheduleRequirement" value="specific" ${cfg.scheduleRequirement==='specific'?'checked':''}>
+                    <div>
+                      <strong>Specific Schedule Required</strong>
+                      <span>Work requires a specific scheduled Date & Time window.</span>
+                    </div>
+                  </label>
+                  <label class="mode-option ${cfg.scheduleRequirement==='due'?'selected':''}">
+                    <input type="radio" name="scheduleRequirement" value="due" ${cfg.scheduleRequirement==='due'?'checked':''}>
+                    <div>
+                      <strong>Due-date-driven</strong>
+                      <span>Work can be completed at any time before its due date.</span>
+                    </div>
+                  </label>
+                </div>
+
+                ${cfg.scheduleRequirement==='specific'?`
+                  <div class="schedule-field-row">
+                    <div>
+                      <label>Schedule Date / Date & Time Field</label>
+                      <p>Select the field in this Job Type that provides the specific schedule date or Date & Time window.</p>
+                    </div>
+                    <select id="scheduleFieldSelect" class="field-source-select">
+                      ${['Scheduled Date & Time','Planned Start','Field Visit Window','Appointment Date','Target Service Date'].map(f=>`<option ${cfg.scheduleField===f?'selected':''}>${f}</option>`).join('')}
+                    </select>
+                  </div>
+                `:`
+                  <div class="schedule-field-row">
+                    <div>
+                      <label>Due Date Field</label>
+                      <p>Select the field in this Job Type that provides the due date used for due-date-driven planning.</p>
+                    </div>
+                    <select id="dueDateFieldSelect" class="field-source-select">
+                      ${['Due Date','Required By Date','Commitment Date','Target Completion Date','Service Deadline'].map(f=>`<option ${cfg.dueDateField===f?'selected':''}>${f}</option>`).join('')}
+                    </select>
+                  </div>
+                `}
+              </div>
+
+              <div class="config-save-row">
+                <button class="btn primary large">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>`;
+  };
+})();;
+
+(function(){
+  const CP=window.CP; const app=document.getElementById('app'); const state=CP.createState(); window.prototypeState=state;
+  let toastTimer=null,lastToastText=null;
+  function calendarOffsetForDate(dateStr){
+    const base=new Date('2026-08-31T00:00:00');
+    const dt=new Date(dateStr+'T00:00:00');
+    return Math.floor((dt-base)/(86400000*7));
+  }
+  function render(){
+    const d=CP.derive(state); let html='';
+    if(state.view==='portfolio') html=CP.renderPortfolio(state,d);
+    else if(state.view==='workspace') html=CP.renderWorkspace(state,d);
+    else if(state.view==='unphased') html=CP.renderUnphased(state,d);
+    else if(state.view==='schedule') html=CP.renderSchedule(state,d);
+    else if(state.view==='configuration') html=CP.renderConfiguration(state);
+    app.innerHTML=`<nav class="side-nav"><div class="brand">C</div><button class="nav-item">⌂<span>Home</span></button><button class="nav-item ${state.view!=='configuration'?'active':''}" data-action="nav-capacity">▥<span>Capacity</span></button><button class="nav-item">▤<span>Schedule</span></button><button class="nav-item ${state.view==='configuration'?'active':''}" data-action="nav-configuration">⚙<span>Configuration</span></button></nav><main>${html}</main>${state.toast?`<div class="toast">✓ ${state.toast}<button data-action="clear-toast">×</button></div>`:''}`;
+    wireDrag();
+    if(state.toast!==lastToastText){
+      lastToastText=state.toast;
+      if(toastTimer)clearTimeout(toastTimer);
+      if(state.toast){
+        toastTimer=setTimeout(()=>{state.toast=null;lastToastText=null;toastTimer=null;render();},5000);
+      }
+    }
+  }
+  function navigateWorkspace(id){state.workspaceId=id; state.selectedWeek=null; state.view='workspace'; state.sidePanel=null; render();}
+  app.addEventListener('click',e=>{
+    const el=e.target.closest('[data-action]'); if(!el)return; const a=el.dataset.action;
+    if(a==='nav-capacity'){state.view='portfolio';state.workspaceId=null;state.selectedWeek=null;}
+    if(a==='nav-configuration'){state.view='configuration';}
+    if(a==='config-capacity-toggle'){state.config.capacityPlanningEnabled=el.checked;}
+    if(a==='status-role-mode'){state.config.statusRoles[el.dataset.status].mode=el.value;}
+    if(a==='status-role-option'){
+      const st=el.dataset.status,role=el.dataset.role,arr=state.config.statusRoles[st].roles;
+      state.config.statusRoles[st].roles=arr.includes(role)?arr.filter(x=>x!==role):[...arr,role];
+    }
+    if(a==='portfolio'){state.view='portfolio';state.workspaceId=null;state.selectedWeek=null;}
+    if(a==='portfolio-week'){state.portfolioWeek=+el.dataset.week;}
+    if(a==='summary-assignment'){state.selectedWeek=+el.dataset.week;state.workspaceId='W1';state.view='schedule';state.assignmentView='timeline';state.selectedGanttWorkIds=[];state.selectedCalendarWorkIds=[];state.personAnchor=null;}
+    if(a==='workspace') navigateWorkspace(el.dataset.id);
+    if(a==='select-week'){state.selectedWeek=+el.dataset.week;}
+    if(a==='open-week'){state.workspaceId='W1';state.selectedWeek=+el.dataset.week;state.view='workspace';}
+    if(a==='review-unassigned'||a==='open-assignment'){state.workspaceId=state.workspaceId||'W1';state.selectedWeek=state.selectedWeek==null?0:state.selectedWeek;state.view='schedule';state.scheduleMode='work';state.scheduleTab='Unassigned';state.personAnchor=null;state.calendarWeekOffset=0;}
+    if(a==='assignment-view'){state.assignmentView=el.dataset.view;}
+    if(a==='calendar-work-select'){
+      const id=el.dataset.id;
+      const already=state.selectedCalendarWorkIds.includes(id);
+      state.selectedCalendarWorkIds=already?state.selectedCalendarWorkIds.filter(x=>x!==id):[...state.selectedCalendarWorkIds,id];
+      if(!already){
+        const w=[...state.work,...state.phasedFromUnphased].find(x=>x.id===id);
+        if(w)state.calendarWeekOffset=calendarOffsetForDate(w.start);
+      }
+    }
+    if(a==='calendar-assignee-menu-select'){
+      const allIds=(CP.schedulePeopleSeed[state.workspaceId]||[]).map(p=>p.id);
+      const cur=state.selectedCalendarAssigneeIds.includes('__none__')?[]:(state.selectedCalendarAssigneeIds.length?[...state.selectedCalendarAssigneeIds]:[...allIds]);
+      const id=el.dataset.id;
+      state.selectedCalendarAssigneeIds=cur.includes(id)?cur.filter(x=>x!==id):[...cur,id];
+      if(state.selectedCalendarAssigneeIds.length===0)state.selectedCalendarAssigneeIds=['__none__'];
+    }
+    if(a==='calendar-assignee-all'){state.selectedCalendarAssigneeIds=[];}
+    if(a==='calendar-assignee-clear'){state.selectedCalendarAssigneeIds=['__none__'];}
+    if(a==='calendar-prev-week'){state.calendarWeekOffset=(state.calendarWeekOffset||0)-1;}
+    if(a==='calendar-next-week'){state.calendarWeekOffset=(state.calendarWeekOffset||0)+1;}
+    if(a==='calendar-today'){state.calendarWeekOffset=0;}
+    if(a==='calendar-draft-here'){
+      const workId=el.dataset.work;
+      const w=[...state.work,...state.phasedFromUnphased].find(x=>x.id===workId);
+      state.selectedWorkId=workId;
+      createDraft(el.dataset.person);
+      state.selectedCalendarWorkIds=state.selectedCalendarWorkIds.filter(id=>id!==workId);
+      if(w)state.calendarWeekOffset=calendarOffsetForDate(w.start);
+    }
+    if(a==='review-unphased'){state.view='unphased';}
+    if(a==='set-schedule'){state.sidePanel=el.dataset.id;}
+    if(a==='close-panel'){state.sidePanel=null;}
+    if(a==='save-schedule'){const wi=+document.getElementById('scheduleWeek').value; CP.phaseItem(state,el.dataset.id,{weekIndex:wi,start:document.getElementById('scheduleStart').value,end:document.getElementById('scheduleEnd').value});state.sidePanel=null;}
+    if(a==='find-work'){state.personAnchor=el.dataset.person;state.scheduleMode='person';state.scheduleTab='Unassigned';state.selectedWeek=state.selectedWeek==null?0:state.selectedWeek;state.view='schedule';}
+    if(a==='object-filter'){state.objectFilter=el.dataset.object;state.selectedWorkId=null;}
+
+    if(a==='select-work'){
+      const id=el.dataset.id,cur=state.selectedGanttWorkIds||[];
+      state.selectedGanttWorkIds=cur.includes(id)?cur.filter(x=>x!==id):[...cur,id];
+      state.selectedWorkId=state.selectedGanttWorkIds[state.selectedGanttWorkIds.length-1]||null;
+    }
+    if(a==='draft-here'){
+      if(el.dataset.work)state.selectedWorkId=el.dataset.work;
+      createDraft(el.dataset.person);
+    }
+    if(a==='cancel-draft'){state.drafts=state.drafts.filter(x=>x.workId!==el.dataset.id);state.selectedWorkId=null;state.toast=state.drafts.length?'Draft change removed':'Draft changes cleared';}
+    if(a==='cancel-all'){state.drafts=[];state.selectedWorkId=null;}
+    if(a==='publish'){CP.publish(state);}
+    if(a==='clear-toast'){state.toast=null;lastToastText=null;if(toastTimer){clearTimeout(toastTimer);toastTimer=null;}}
+    render();
+  });
+  app.addEventListener('change',e=>{
+    if(e.target.name==='pwhMode'){state.config.pwhMode=e.target.value;render();}
+    if(e.target.name==='scheduleRequirement'){state.config.scheduleRequirement=e.target.value;render();}
+    if(e.target.id==='scheduleFieldSelect'){state.config.scheduleField=e.target.value;}
+    if(e.target.id==='dueDateFieldSelect'){state.config.dueDateField=e.target.value;}
+    if(e.target.id==='wholeHoursInput'){state.config.wholeHours=Number(e.target.value)||0;}
+    if(e.target.matches('[data-status-hours]')){state.config.statusRoles[e.target.dataset.status].hours=Number(e.target.value)||0;}
+    if(e.target.matches('[data-action="status-role-mode"]')){state.config.statusRoles[e.target.dataset.status].mode=e.target.value;render();}
+    if(e.target.id==='workspaceSelect'||e.target.name==='scheduleWorkspace'){state.workspaceId=e.target.value;state.selectedWorkId=null;state.selectedGanttWorkIds=[];state.selectedCalendarWorkIds=[];state.selectedCalendarAssigneeIds=[];state.calendarWeekOffset=0;state.workTypeFilter='All types';render();}
+    if(e.target.id==='workTypeSelect'){state.workTypeFilter=e.target.value;state.selectedWorkId=null;render();}
+  });
+  app.addEventListener('input',e=>{
+    if(e.target.id==='workSearch'){state.searchTerm=e.target.value;render(); const inp=document.getElementById('workSearch'); if(inp){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);}}
+  });
+  function createDraft(personId,fromOverride=null){
+    if(!state.selectedWorkId)return;
+    const workId=state.selectedWorkId;
+    const existing=state.drafts.findIndex(x=>x.workId===workId);
+    const w=[...state.work,...state.phasedFromUnphased].find(x=>x.id===workId);
+    const pub=state.publishedAssignments.find(x=>x.workId===workId);
+    const fromPersonId=fromOverride||(pub?pub.toPersonId:(w&&w.assignedTo?w.assignedTo:null));
+    if(fromPersonId&&fromPersonId===personId){state.selectedWorkId=null;return;}
+    const item={workId,toPersonId:personId,fromPersonId}; if(existing>=0)state.drafts[existing]=item; else state.drafts.push(item); state.selectedGanttWorkIds=(state.selectedGanttWorkIds||[]).filter(id=>id!==workId);state.selectedCalendarWorkIds=(state.selectedCalendarWorkIds||[]).filter(id=>id!==workId);state.selectedWorkId=null; state.toast=`Draft created · ${state.drafts.length} unpublished change${state.drafts.length>1?'s':''}`;
+  }
+  function wireDrag(){
+    // Gantt drag/drop.
+    document.querySelectorAll('.work-item[draggable="true"]').forEach(el=>el.addEventListener('dragstart',ev=>{
+      state.selectedWorkId=el.dataset.id;
+      ev.dataTransfer.effectAllowed='move';
+      ev.dataTransfer.setData('text/plain',el.dataset.id);
+      setTimeout(render,0);
+    }));
+    document.querySelectorAll('[data-drop-person]').forEach(el=>{
+      el.addEventListener('dragover',ev=>ev.preventDefault());
+      el.addEventListener('drop',ev=>{
+        ev.preventDefault();
+        state.selectedWorkId=ev.dataTransfer.getData('text/plain');
+        const from=ev.dataTransfer.getData('application/x-reassign-from')||null;
+        createDraft(el.dataset.dropPerson,from);
+        render();
+      });
+    });
+
+    // Direct reassignment: drag any existing published Work/Task bar to another assignee.
+    document.querySelectorAll('[data-reassign-work][draggable="true"]').forEach(el=>{
+      el.addEventListener('dragstart',ev=>{
+        const workId=el.dataset.reassignWork;if(!workId)return;
+        ev.dataTransfer.effectAllowed='move';
+        ev.dataTransfer.setData('text/plain',workId);
+        ev.dataTransfer.setData('application/x-reassign-from',el.dataset.reassignFrom||'');
+        el.classList.add('dragging-reassign');
+      });
+      el.addEventListener('dragend',()=>el.classList.remove('dragging-reassign'));
+    });
+
+    // Calendar drag/drop. Drag one specific Work/Task card to any visible Assignee row.
+    document.querySelectorAll('[data-calendar-drag-work][draggable="true"]').forEach(el=>{
+      el.addEventListener('dragstart',ev=>{
+        const workId=el.dataset.calendarDragWork;
+        ev.dataTransfer.effectAllowed='move';
+        ev.dataTransfer.setData('text/plain',workId);
+        el.classList.add('dragging');
+      });
+      el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    });
+    document.querySelectorAll('[data-calendar-drop-person]').forEach(el=>{
+      el.addEventListener('dragenter',ev=>{
+        ev.preventDefault();
+        el.classList.add('calendar-drop-target');
+      });
+      el.addEventListener('dragover',ev=>{
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect='move';
+        el.classList.add('calendar-drop-target');
+      });
+      el.addEventListener('dragleave',ev=>{
+        if(!el.contains(ev.relatedTarget))el.classList.remove('calendar-drop-target');
+      });
+      el.addEventListener('drop',ev=>{
+        ev.preventDefault();
+        el.classList.remove('calendar-drop-target');
+        const workId=ev.dataTransfer.getData('text/plain');
+        if(!workId)return;
+        const work=[...state.work,...state.phasedFromUnphased].find(x=>x.id===workId);
+        const from=ev.dataTransfer.getData('application/x-reassign-from')||null;
+        state.selectedWorkId=workId;
+        createDraft(el.dataset.calendarDropPerson,from);
+        state.selectedCalendarWorkIds=state.selectedCalendarWorkIds.filter(id=>id!==workId);
+        if(work)state.calendarWeekOffset=calendarOffsetForDate(work.start);
+        render();
+      });
+    });
+  }
+  render();
+})();
+</script></body></html>
